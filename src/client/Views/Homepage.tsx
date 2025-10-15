@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 
+
 import {
   Button,
   ReloadOutlined,
@@ -16,11 +17,15 @@ import {
   Space
 } from '../antdComponents';
 
+// import the user context
+import { useUserContext } from "../context";
+
 import { FaArrowCircleRight } from 'react-icons/fa';
 
 import AvatarPicker from '../Components/AvatarPicker';
-import CreateGameButton from '../Components/CreateGameButton';
-import GameCodeJoin from '../Components/GameCodeJoin';
+import HomepageSignInToPlay from '../Components/HomepageSignInToPlay';
+import HomepageCreateJoin from '../Components/HomepageCreateJoin';
+import HomepageName from '../Components/HomepageName';
 
 // styling
 
@@ -28,22 +33,8 @@ const largeStyle: React.CSSProperties = {
   width: '100%',
   height: 500,
   borderRadius: 6
-  //   border: '3px solid #3B262C',
 };
 
-const randomizerStyle: React.CSSProperties = {
-  width: '100%',
-  height: 75,
-  borderRadius: 6
-  //   border: '3px solid #3B262C',
-};
-
-const joinCreateStyle: React.CSSProperties = {
-  width: '100%',
-  height: 350,
-  borderRadius: 6,
-  border: '3px solid #3B262C'
-};
 
 const buttonStyle: React.CSSProperties = {
   width: '100%',
@@ -57,10 +48,12 @@ type HomePageProps = {
 const Homepage: React.FC = ({socket}:HomePageProps) => {
 
   // --------------------[STATES]---------------------
+  
+  const [randomName, setRandomName] = useState('');
 
-  const [randomName, setRandomName] = useState('')
 
   // --------------------[HANDLERS]--------------------
+
 
   const handleRandomizeName = () => {
     axios.get('/name-randomizer').then(res => {
@@ -82,41 +75,14 @@ const Homepage: React.FC = ({socket}:HomePageProps) => {
             <h1>Welcome to Crooked Curators!</h1>
           </Row>
           <Row gutter={15}>
-            <Flex style={randomizerStyle} justify='center' align='center'>
-              <Col>
-                <Card
-                  style={{ width: 250, height: 50, textAlign: 'center' }}
-                  size='small'
-                >
-                  <h2
-                    style={{
-                      fontSize: '15px',
-                      marginTop: '1px'
-                    }}
-                  >
-                    {randomName}
-                  </h2>
-                </Card>
-              </Col>
-              <Col>
-                <Button onClick={handleRandomizeName}>
-                  <ReloadOutlined />
-                </Button>
-              </Col>
-            </Flex>
+            <HomepageName 
+              randomName={randomName}
+              handleRandomizeName={handleRandomizeName}
+            />
           </Row>
           <Row>
-            <Flex style={joinCreateStyle} justify='center' align='center'>
-              <Col>
-                <Row>
-                  <CreateGameButton username={randomName} />
-                </Row>
-                <p />
-                <Row>
-                  <GameCodeJoin username={randomName} socket={socket}/>
-                </Row>
-              </Col>
-            </Flex>
+            <HomepageCreateJoin randomName={randomName} />
+            <HomepageSignInToPlay />
           </Row>
         </Col>
       </Flex>
