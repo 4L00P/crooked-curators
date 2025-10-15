@@ -26,15 +26,21 @@ import AvatarPicker from '../Components/AvatarPicker';
 import HomepageSignInToPlay from '../Components/HomepageSignInToPlay';
 import HomepageCreateJoin from '../Components/HomepageCreateJoin';
 import HomepageName from '../Components/HomepageName';
+import HowToPlay from '../Components/HowToPlay';
 
 // styling
 
 const largeStyle: React.CSSProperties = {
   width: '100%',
-  height: 500,
+  height: '100%',
   borderRadius: 6
 };
 
+const titleStyle: React.CSSProperties = {
+  width: '100%',
+  height: '100%',
+  borderRadius: 6
+};
 
 const buttonStyle: React.CSSProperties = {
   width: '100%',
@@ -72,7 +78,9 @@ const Homepage: React.FC = ({socket}:HomePageProps) => {
       <Flex style={largeStyle} justify="center" align='flex-start'>
         <Col>
           <Row>
-            <h1>Welcome to Crooked Curators!</h1>
+            <Flex style={titleStyle} justify="center" align='flex-center'>
+              <h1>Welcome to Crooked Curators!</h1>
+            </Flex>
           </Row>
           <Row gutter={15}>
             <HomepageName 
@@ -83,6 +91,9 @@ const Homepage: React.FC = ({socket}:HomePageProps) => {
           <Row>
             <HomepageCreateJoin randomName={randomName} />
             <HomepageSignInToPlay />
+          </Row>
+          <Row>
+            <HowToPlay />
           </Row>
         </Col>
       </Flex>

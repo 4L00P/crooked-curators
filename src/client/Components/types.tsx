@@ -34,3 +34,7 @@ export type LockInJudging = {
   artworks: [];
   ribbons: [];
 }
+
+export type NavBar = {
+  onClick: () => void
+}

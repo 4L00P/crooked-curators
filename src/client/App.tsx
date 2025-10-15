@@ -15,7 +15,6 @@ import {
   ConfigProvider,
 } from "./antdComponents";
 
-import "./CSS/style.module.css";
 
 // -------------------[COMPONENTS]------------------
 import NavBar from "./Components/NavBar";
@@ -46,7 +45,7 @@ const App: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { colorBgContainer },
   } = theme.useToken();
 
   // --------------------[STATES]---------------------
@@ -169,18 +168,18 @@ const App: React.FC = () => {
 
     function referenceSelected(ref) {
 
-      setGame((oldGame)=>({...oldGame, reference: ref}))
+      setGame((oldGame) => ({ ...oldGame, reference: ref }))
     }
 
     function stageAdvance(stage) {
       // set game stage to whatever is sent from server
       setGame((oldGame) => {
         // send updated game info to setView
-        setView({...oldGame, stage: stage})
+        setView({ ...oldGame, stage: stage })
         // update game context
-        return {...oldGame, stage: stage}
+        return { ...oldGame, stage: stage }
       })
-      
+
     }
 
     // SOCKET LISTENERS
@@ -226,33 +225,20 @@ const App: React.FC = () => {
     <UserContext.Provider value={{ user, setUser }}>
       <GameContext.Provider value={{ game, setGame }}>
         <SocketContext.Provider value={{ socket, setSocket }}>
-          <ConfigProvider
-            theme={{
-              token: {
-                // Seed Token
-                colorPrimary: "#058f6fff",
-                colorBgLayout: "#F0E7CA",
-                borderRadius: 2,
 
-                // Alias Token
-                colorBgContainer: "#ffffffff",
-              },
-            }}
-          >
-            <Layout>
-              <NavBar />
-              <div>{`User Context: ${user.username}, ${
-                user.loggedIn
+          <Layout>
+            <NavBar />
+            <div>{`User Context: ${user.username}, ${user.loggedIn
               } \n Game Context: ${Object.keys(game).map(
                 (key) => key + ":" + game[key]
               )}`}</div>
-              <Content
-                style={{
-                  padding: "0 48px",
-                  color: "#3B262C",
-                }}
-              >
-                {/* <Breadcrumb
+            <Content
+              style={{
+                padding: "0 15%",
+                color: "#3B262C",
+              }}
+            >
+              {/* <Breadcrumb
                   style={{ margin: "16px 0" }}
                   items={[
                     { title: "Home" },
@@ -260,74 +246,73 @@ const App: React.FC = () => {
                     { title: "App" },
                   ]}
                 /> */}
-                <div
-                  style={{
-                    background: colorBgContainer,
-                    minHeight: 280,
-                    padding: 24,
-                    borderRadius: borderRadiusLG,
-                  }}
-                >
-                  <Routes>
-                    <Route path="/" element={<Homepage socket={socket} />} />
-                    <Route
-                      path="/game-settings"
-                      element={
-                        <>
-                          <SwitchView view={view} />
-                          <GameSettings
-                            roomCode={roomCode}
-                            players={players}
-                            socket={socket}
-                          />
-                        </>
-                      }
-                    />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route
-                      path="/game"
-                      element={
-                        <>
+              <div
+                style={{
+                  background: colorBgContainer,
+                  minHeight: 280,
+                  padding: 24,
+                  borderRadius: 20,
+                }}
+              >
+                <Routes>
+                  <Route path="/" element={<Homepage socket={socket} />} />
+                  <Route
+                    path="/game-settings"
+                    element={
+                      <>
+                        <SwitchView view={view} />
+                        <GameSettings
+                          roomCode={roomCode}
+                          players={players}
+                          socket={socket}
+                        />
+                      </>
+                    }
+                  />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route
+                    path="/game"
+                    element={
+                      <>
                         <SwitchView view={view} />
                         <ActiveGame
                           socket={socket}
                           handleArtworks={handleGetRoundArtworks}
                         />
-                        </>
-                      }
-                    />
-                    <Route
-                      path="/judging"
-                      element={
-                        <RoundJudging
-                          artworks={roundArtworks}
-                          handleArtworks={handleGetRoundArtworks}
-                          setArtworks={setRoundArtworks}
-                        />
-                      }
-                    />
-                    <Route path="/gallery" element={<Gallery />} />
-                    <Route 
-                      path="/curator"
-                      element={
-                        <>
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/judging"
+                    element={
+                      <RoundJudging
+                        artworks={roundArtworks}
+                        handleArtworks={handleGetRoundArtworks}
+                        setArtworks={setRoundArtworks}
+                      />
+                    }
+                  />
+                  <Route path="/gallery" element={<Gallery />} />
+                  <Route
+                    path="/curator"
+                    element={
+                      <>
                         <SwitchView view={view} />
                         <CuratorSearch />
-                        </>
-                      } 
-                    />
-                    <Route
-                      path="*"
-                      element={<p>There is nothing here: 404!</p>}
-                    />
-                  </Routes>
-                </div>
-              </Content>
-              <Footer style={{ textAlign: "center" }}>
-                Crooked Curators ©{new Date().getFullYear()} Created by 4LOOP
-              </Footer>
-            </Layout>
-          </ConfigProvider>{" "}
+                      </>
+                    }
+                  />
+                  <Route
+                    path="*"
+                    element={<p>There is nothing here: 404!</p>}
+                  />
+                </Routes>
+              </div>
+            </Content>
+            <Footer style={{ textAlign: "center" }}>
+              Crooked Curators ©{new Date().getFullYear()} Created by 4LOOP
+            </Footer>
+          </Layout>
         </SocketContext.Provider>
       </GameContext.Provider>
     </UserContext.Provider>

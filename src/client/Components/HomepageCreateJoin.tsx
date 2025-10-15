@@ -10,9 +10,7 @@ import GameCodeJoin from "./GameCodeJoin";
 
 const joinCreateStyle: React.CSSProperties = {
   width: "100%",
-  height: 350,
-  borderRadius: 6,
-  border: "3px solid #3B262C",
+  height: 200,
 };
 
 const HomepageCreateJoin = ({randomName}) => {

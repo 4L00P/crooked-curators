@@ -24,13 +24,17 @@ export const SignInButton = () => {
   return (
     <>
       {user.loggedIn ? (
-        <Link onClick={handleSignOut} to="/" >
-          Sign Out
-        </Link>
+        <li>
+          <Link onClick={handleSignOut} to="/" >
+            Sign Out
+          </Link>
+        </li>
       ) : (
-        <a href="/auth/google/">
-          Sign-In
-        </a>
+        <li>
+          <a href="/auth/google/">
+            Sign-In
+          </a>
+        </li>
       )}
     </>
   );

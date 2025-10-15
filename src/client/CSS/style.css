@@ -1,0 +1,76 @@
+/* Color variables */
+:root {
+    --cyan: #058f6fff;
+    --cyan-rgb: 141, 235, 213;
+    --lightcream: #f8f4e5;
+    --cream: #F0E7CA;
+    --yellow: #EDDB98;
+    --mauve: #9E6072;
+    --lightmauve: #e0b5c2;
+    --maroon: #800933;
+    --darkbrown: #3B262C;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+body {
+    background-color: var(--lightmauve);
+    margin: 0px
+}
+
+.new-nav {
+  background-color: #3B262C;
+  color: var(--lightmauve);
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 0rem 1rem;
+}
+
+.site-title {
+  font-size: 1.25rem;
+}
+
+.new-nav ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.new-nav a {
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: .25rem
+}
+
+.new-nav li.active {
+  background-color: var(--maroon);
+}
+
+.new-nav li:hover {
+  background-color: var(--mauve);
+}
+
+.site-layout-content {
+  min-height: 280px;
+  padding: 24px;
+  background: #fff;
+}
+#components-layout-demo-top .logo {
+  float: left;
+  width: 120px;
+  height: 31px;
+  margin: 16px 24px 16px 0;
+  background: rgba(255, 255, 255, 0.3);
+}
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}
