@@ -3,6 +3,7 @@
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
+import { useSocketContext } from '../context';
 import axios from 'axios';
 
 import { Button } from '../antdComponents';
@@ -15,9 +16,11 @@ import { LockInJudging as LockInJudgingProps } from './types';
 
 const LockInJudging = ({ artworks }: LockInJudgingProps) => {
 
-  // --------------------[STATES]---------------------
+  // --------------[STATES + CONTEXT]---------------------
 
   const [lockInReady, setLockInReady] = useState(false);
+
+  const { socket } = useSocketContext();
 
   // -------------------[HANDLERS]--------------------
 
@@ -37,6 +40,11 @@ const LockInJudging = ({ artworks }: LockInJudgingProps) => {
     .catch((err) => {
       console.error('Failed to PATCH artwork with winning Ribbon: CLIENT')
     })
+  }
+
+  // trigger the next round
+  const triggerNextRound = () => {
+    socket?.emit('newRound')
   }
 
   // -------------------[LIFECYCLE]-------------------
@@ -73,15 +81,19 @@ const LockInJudging = ({ artworks }: LockInJudgingProps) => {
 
   // --------------------[RENDER]---------------------
 
-  if(lockInReady === true){
-    return (
-      <Button>Lock In Ribbons</Button>
-    )
-  } else {
-    return (
-      <Button disabled>Lock In Ribbons</Button>
-    )
-  }
+  return (
+    <Button onClick={triggerNextRound}>Lock In Ribbons</Button>
+  )
+
+  // if(lockInReady === true){
+  //   return (
+  //     <Button>Lock In Ribbons</Button>
+  //   )
+  // } else {
+  //   return (
+  //     <Button disabled>Lock In Ribbons</Button>
+  //   )
+  // }
 }
 
 export default LockInJudging;

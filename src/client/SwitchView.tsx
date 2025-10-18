@@ -21,6 +21,10 @@ const SwitchView: React.FC = ({ view }) => {
     return <Navigate to={'/judging'} /> 
   }
 
+  if (stage === 'gallery'){
+    return <Navigate to={'/gallery'} />
+  }
+
 };
 
 export default SwitchView;

@@ -13,11 +13,10 @@ import Reference from '../Components/Reference';
 import ToJudging from '../Components/ToJudging';
 
 type ActiveGameProps = {
-  socket: any;
   handleArtworks: () => void;
 };
 
-const ActiveGame: React.FC = ({ socket, handleArtworks }: ActiveGameProps) => {
+const ActiveGame: React.FC = ({ handleArtworks }: ActiveGameProps) => {
 
   // --------------------[STATES]---------------------
 
@@ -56,7 +55,12 @@ const ActiveGame: React.FC = ({ socket, handleArtworks }: ActiveGameProps) => {
 
         <Col span={3}>
           <Card >
-            <ToJudging done={done} playerCount={playerCount} socket={socket} handleArtworks={handleArtworks}/>
+            <ToJudging
+              done={done}
+              playerCount={playerCount}
+              handleArtworks={handleArtworks}
+              /* isCurator prop is not being used atm */
+            />
           </Card>
         </Col>
       </Row>

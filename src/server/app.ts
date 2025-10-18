@@ -76,7 +76,7 @@ app.use('/ribbons', ribbonsRouter)
 // serve static files from client
 app.use(express.static(CLIENT));
 
-app.put('/api/user/socketId', (req, res) => {
+app.patch('/api/user/socketId', (req, res) => {
   const { socketId } = req.body;
   if (!socketId) {
     return res.status(400).send('Socket ID is required');

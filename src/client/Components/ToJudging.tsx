@@ -9,18 +9,17 @@ import { useSocketContext } from "../context";
 type ToJudgingProps = {
   done: number;
   playerCount: number;
-  isCurator: boolean;
-  socket: any;
+  // isCurator: boolean; // not being used atm
   handleArtworks: () => void;
 };
 
-const ToJudging = ({ done, playerCount, isCurator, handleArtworks }: ToJudgingProps) => {
+const ToJudging = ({ done, playerCount, handleArtworks }: ToJudgingProps) => {
   
   const { socket } = useSocketContext();
 
   const handleClick = () => {
     handleArtworks();
-    socket.emit("toJudging");
+    socket?.emit("toJudging");
   };
 
   // --------------------[RENDER]---------------------
