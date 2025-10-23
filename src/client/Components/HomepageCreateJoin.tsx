@@ -1,5 +1,5 @@
 import React from "react";
-import { useSocketContext, useUserContext } from "../context";
+import { useUserContext } from "../context";
 
 // ANTD
 import { Flex, Row, Col } from "../antdComponents";

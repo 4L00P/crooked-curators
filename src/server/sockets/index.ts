@@ -116,7 +116,7 @@ io.on('connection', async socket => {
       //----------------------------------------------------------------------
 
       // to the specific room, emit the room code - make it visible for everyone
-      //TODO - update context with code, players array
+      
       io.to(joinAttempt.roomCode).emit('sendRoomDetails', {
         roomCode: joinAttempt.roomCode,
         game: roomExists,
@@ -172,7 +172,6 @@ io.on('connection', async socket => {
       where: { id: allPlayers[roundCount].user_id }
     })
     
-    console.log('allPlayers array:', allPlayers);
 
     // assign currentRound, then add round to database
     currentRound = await Round.create({
@@ -212,7 +211,8 @@ io.on('connection', async socket => {
         const player = await User.findOne({ where: { id: user_id } })
         // add only the parts needed for other players
         return { username: player.username, finished: false }
-      })
+      }),
+      playerArtworks: []
     }
 
     // player emit - targets game room except curator
@@ -252,7 +252,22 @@ io.on('connection', async socket => {
   // _______________________________________________________________________________
   // TO JUDGING
   // emitted from client when judge hits 'To Judging!' button
-  socket.on('toJudging', () => {
+  socket.on('toJudging', async () => {
+    // add the artworks to the context 
+    const handleGetRoundArtworks = async () => {
+      // send get request to /artworks to retrieve images with game code for querying
+      await axios.get(`${BASE_URL}/artworks/judging/${currentGame.gameCode}`)
+        .then(({ data }) => {
+          // update round artworks state to array of artwork objects
+          // setRoundArtworks(data);
+          io.to(currentGame.gameCode).emit('artworkContext', {playerArtworks: data})
+        })
+        .catch((err) => {
+          console.error("Failed to GET artworks from round: SOCKET", err);
+        });
+    };
+    await handleGetRoundArtworks();
+
     // call advanceStage stage function 
     // update stage of the room from painting -> judging
     io.to(currentGame.gameCode).emit('stageAdvance', 'judging')
@@ -292,17 +307,15 @@ io.on('connection', async socket => {
     io.to(currentGame.gameCode).emit('stageAdvance', 'painting')
   })
 
+  // _______________________________________________________________________________
+  // ARTWORK DRAG - ROUND JUDGING
+  socket.on('dragArtwork', (playerArtworks) => {
+
+    // emit the new artwork context to eveyone in the room
+    io.to(currentGame.gameCode).emit('artworkContext', {playerArtworks})
+    
+  })
+
 
 }); // end of connection
 
-
-
-
-// NOT WORKING - attempted to use reload to maintain session connection
-// socket.request.session.reload((err) => {
-//   if (err) {
-//     return socket.disconnect();
-//   }
-//   socket.request.session.count++;
-//   socket.request.session.save();
-// });

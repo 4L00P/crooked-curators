@@ -2,7 +2,7 @@
 :root {
     --cyan: #058f6fff;
     --cyan-rgb: 141, 235, 213;
-    --lightcream: #f8f4e5;
+    --lightcream: #faf8e7;
     --cream: #F0E7CA;
     --yellow: #EDDB98;
     --mauve: #9E6072;
@@ -17,7 +17,16 @@
 
 body {
     background-color: var(--lightmauve);
-    margin: 0px
+    margin: 0px;
+}
+
+.slick-arrow.slick-prev, .slick-arrow.slick-next {
+  color: var(--cyan);
+}
+
+.slick-arrow.slick-prev::after, .slick-arrow.slick-next::after {
+  border-inline-start-width: 5px;
+  border-block-start-width: 5px;
 }
 
 .new-nav {
@@ -26,7 +35,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  padding: 0rem 1rem;
+  height: 3.5rem;
 }
 
 .site-title {

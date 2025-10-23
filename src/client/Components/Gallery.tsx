@@ -1,19 +1,21 @@
 // Gallery that shows all round winners and their ribbons after the last round in a carousel
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from 'react';
 
 import {
   Carousel,
   Col,
   Flex,
+  Button
 } from "../antdComponents";
 
 import Artwork from "./Artwork";
 
-import { useSocketContext } from '../context';
+import { useGameContext, useSocketContext } from '../context';
 
 import { Artwork as ArtworkTypes } from './types';
+import axios from "axios";
 
 // flex styling
 const galleryStyle: React.CSSProperties = {
@@ -83,9 +85,10 @@ type ArtworkCardProps = {
 
 const Gallery: React.FC = ({artwork, size}: ArtworkCardProps) => {
 
-  const [galleryArtworks, setGalleryArtworks] = useState(FAKE_ARTWORKS)
+  const [galleryArtworks, setGalleryArtworks] = useState([])
 
   const { socket } = useSocketContext();
+  const { code } = useGameContext().game;
 
   const onChange = (currentSlide: number) => {
     // console.log(currentSlide);
@@ -96,6 +99,22 @@ const Gallery: React.FC = ({artwork, size}: ArtworkCardProps) => {
     socket?.emit('toLobby');
   }
 
+  const handleGameArtworks = () => {
+
+    // request artworks from server
+    axios.get(`/artworks/gallery/${code}`)
+      .then(({ data }) => {
+        setGalleryArtworks(data);
+      })
+      .catch((err: Error) => {
+        console.error('Failed to GET all artworks for Gallery: CLIENT:', err);
+      });
+  }
+
+  useEffect(() => {
+    handleGameArtworks();
+  }, [])
+
   return (
     <>
       <Flex gap="middle" align="center" vertical>
@@ -103,8 +122,7 @@ const Gallery: React.FC = ({artwork, size}: ArtworkCardProps) => {
           <Col>
             <h2>Ribbon Winners:</h2>
             List Ribbon Winners
-          </Col>
-          <Col>
+      
             <Carousel
               arrows
               infinite={true}
@@ -114,15 +132,24 @@ const Gallery: React.FC = ({artwork, size}: ArtworkCardProps) => {
               {
                 galleryArtworks.map((artwork) => {
                   return (
-                    <Artwork key={artwork.id} artwork={artwork} size={{ width: 1280, height: 720 }}/>
+                    <Artwork key={artwork.id.toString()} artwork={artwork} size={{ width: 1280, height: 720 }}/>
                   );
                 })
               }
             </Carousel>
-          </Col>
-          <Col>
-              <h2>Play Again?</h2>
-              <button onClick={toLobby}>Start</button>
+       
+              <Button
+                onClick={toLobby}
+                variant="solid"
+                color="primary"
+                style={{
+                  width: 200,
+                  height: 50,
+                  borderRadius: 8
+                }}
+              >
+                Play Again
+              </Button>
           </Col>
         </Flex>
       </Flex>

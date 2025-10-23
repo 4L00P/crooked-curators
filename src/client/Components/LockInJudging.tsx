@@ -3,7 +3,7 @@
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { useSocketContext } from '../context';
+import { useGameContext, useSocketContext } from '../context';
 import axios from 'axios';
 
 import { Button } from '../antdComponents';
@@ -14,7 +14,7 @@ import { LockInJudging as LockInJudgingProps } from './types';
 
 // -------------------[COMPONENT]-------------------
 
-const LockInJudging = ({ artworks }: LockInJudgingProps) => {
+const LockInJudging = () => {
 
   // --------------[STATES + CONTEXT]---------------------
 
@@ -22,23 +22,25 @@ const LockInJudging = ({ artworks }: LockInJudgingProps) => {
 
   const { socket } = useSocketContext();
 
+  const { ribbons, playerArtworks } = useGameContext().game;
+
   // -------------------[HANDLERS]--------------------
 
   // locking in the judging to add ribbons to winning artworks in the DB
   const handleLockIn = () => {
 
     // make request to update each of the artworks' entries in the DB to have the ribbon referenced by ribbon_id
-    axios.patch('/artworks', {
-
+    axios.patch('/artworks/ribbons', {
       // include artwork id and ribbon id
-
+      artworks: playerArtworks,
+      ribbons: ribbons
     })
     .then(() => {
       // will a then block be needed?
       console.log('Successfully PATCHed artwork with winning Ribbon')
     })
-    .catch((err) => {
-      console.error('Failed to PATCH artwork with winning Ribbon: CLIENT')
+    .catch((err: Error) => {
+      console.error('Failed to PATCH artwork with winning Ribbon: CLIENT:', err)
     })
   }
 
@@ -52,7 +54,7 @@ const LockInJudging = ({ artworks }: LockInJudgingProps) => {
   useEffect(() => {
 
     // check to make sure that the amount of artworks in each column is exactly one
-    const toUpdate = artworks.map((artwork) => {
+    const toUpdate = playerArtworks.map((artwork) => {
       return artwork.status === 'BLUE' || artwork.status === 'WHITE' || artwork.status === 'RED';
     })
 
@@ -64,9 +66,9 @@ const LockInJudging = ({ artworks }: LockInJudgingProps) => {
       if(artwork.status === 'BLUE'){
         blueRibbonArts++;
       } else if(artwork.status === 'WHITE'){
-        redRibbonArts++;
+        whiteRibbonArts++;
       } else if(artwork.status === 'RED'){
-        whiteRibbonArts;
+        redRibbonArts++;
       }
     });
 
@@ -82,7 +84,10 @@ const LockInJudging = ({ artworks }: LockInJudgingProps) => {
   // --------------------[RENDER]---------------------
 
   return (
-    <Button onClick={triggerNextRound}>Lock In Ribbons</Button>
+    <Button onClick={() => {
+      triggerNextRound();
+      handleLockIn();
+    }}>Lock In Ribbons</Button>
   )
 
   // if(lockInReady === true){

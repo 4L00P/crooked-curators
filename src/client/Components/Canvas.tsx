@@ -10,8 +10,13 @@ import {
   Row,
   Flex,
   FlexProps,
-  Segmented
+  Segmented,
+  Button,
+  Tooltip
 } from '../antdComponents';
+
+import { IoArrowUndoSharp, IoArrowRedoSharp } from "react-icons/io5";
+import { FaPenNib, FaEraser, FaRegSave, FaDownload } from 'react-icons/fa';
 
 import { useGameContext } from '../context';
 
@@ -21,7 +26,7 @@ import { Stage, Layer, Line, Text, Rect } from 'react-konva';
 
 import CanvasTools from './CanvasTools';
 import SubmitArtwork from './SubmitArtwork';
-import GameCodeJoin from './GameCodeJoin';
+import CanvasColorPicker from './ColorPicker';
 
 // ---------------------[TYPES]---------------------
 
@@ -227,49 +232,86 @@ const Canvas = ({ handleDone }: CanvasPropTypes) => {
       </Divider>
       <Flex gap="middle" align="center" vertical>
         <Flex style={boxStyle} justify='space-evenly' align='center'>
-          <CanvasTools
-            changeColor={setLineColor}
-            tool={tool}
-            setTool={setTool}
-            handleUndo={handleUndo}
-            handleRedo={handleRedo}
-            handleSave={handleSaveToProfile}
-            handleDownload={handleDownload}
-          />
-          <div ref={containerRef} style={canvasBoxStyle}>
-            <Stage
-              width={900}
-              height={500}
-              ref={stageRef}
-              onMouseDown={handleMouseDown}
-              onMousemove={handleMouseMove}
-              onMouseup={handleMouseUp}
-              onTouchStart={handleMouseDown}
-              onTouchMove={handleMouseMove}
-              onTouchEnd={handleMouseUp}
-            >
-              <Layer>
-                <Rect x={0} y={0} width={900} height={500} fill="white" />
-              </Layer>
-              <Layer>
-                {lines.map((line, i) => (
-                  <Line
-                    key={i}
-                    points={line.points}
-                    stroke={line.stroke}
-                    strokeWidth={5}
-                    tension={0.5}
-                    lineCap="round"
-                    lineJoin="round"
-                    globalCompositeOperation={
-                      line.tool === 'eraser' ? 'destination-out' : 'source-over'
-                    }
-                  />
-                ))}
-              </Layer>
-            </Stage>
-          </div>
-          <SubmitArtwork handleSubmitImage={handleSubmitImage} handleDone={handleDone} />
+          <Col>
+            <CanvasTools
+              tool={tool}
+              setTool={setTool}
+              handleUndo={handleUndo}
+              handleRedo={handleRedo}
+            />
+          </Col>
+          <Col>
+            <br />
+          </Col>
+          <Col>
+            <div ref={containerRef} style={canvasBoxStyle}>
+              <Stage
+                width={900}
+                height={500}
+                ref={stageRef}
+                onMouseDown={handleMouseDown}
+                onMousemove={handleMouseMove}
+                onMouseup={handleMouseUp}
+                onTouchStart={handleMouseDown}
+                onTouchMove={handleMouseMove}
+                onTouchEnd={handleMouseUp}
+              >
+                <Layer>
+                  <Rect x={0} y={0} width={900} height={500} fill="white" />
+                </Layer>
+                <Layer>
+                  {lines.map((line, i) => (
+                    <Line
+                      key={i}
+                      points={line.points}
+                      stroke={line.stroke}
+                      strokeWidth={5}
+                      tension={0.5}
+                      lineCap="round"
+                      lineJoin="round"
+                      globalCompositeOperation={
+                        line.tool === 'eraser' ? 'destination-out' : 'source-over'
+                      }
+                    />
+                  ))}
+                </Layer>
+              </Stage>
+            </div>
+          </Col>
+          <Col>
+            <br />
+          </Col>
+          <Col>
+            <Row>
+              <Tooltip title="Save to profile">
+                <Button onClick={handleSaveToProfile} disabled>
+                  <FaRegSave />
+                </Button>
+              </Tooltip>
+            </Row>
+            <p />
+            <Row>
+              <Tooltip title="Download">
+                <Button onClick={handleDownload}>
+                  <FaDownload />
+                </Button>
+              </Tooltip>
+            </Row>
+            <br />
+            <br />
+            <br />
+            <br />
+            <Row>
+              <CanvasColorPicker changeColor={setLineColor} />
+            </Row>
+            <br />
+            <br />
+            <br />
+            <br />
+            <Row>
+              <SubmitArtwork handleSubmitImage={handleSubmitImage} handleDone={handleDone} />
+            </Row>
+          </Col>
         </Flex>
       </Flex>
     </div>

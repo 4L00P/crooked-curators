@@ -57,23 +57,6 @@ const CanvasTools: React.FC = (props: propsTypes) => {
   return(
     <Col>
       <Row>
-        <Tooltip title="Save to profile">
-          <Button onClick={handleSave} disabled>
-            <FaRegSave />
-          </Button>
-        </Tooltip>
-      </Row>
-      <p />
-      <Row>
-        <Tooltip title="Download">
-          <Button onClick={handleDownload}>
-            <FaDownload />
-          </Button>
-        </Tooltip>
-      </Row>
-      <br />
-      <br />
-      <Row>
         <Tooltip title="Undo">
           <Button onClick={handleUndo}>
             <IoArrowUndoSharp />

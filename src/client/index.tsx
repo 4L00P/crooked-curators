@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter } from "react-router";
 import App from './App'
 import './CSS/style.css'
 
@@ -14,14 +14,19 @@ app.render(
   <BrowserRouter>
     <ConfigProvider
       theme={{
+        components:{
+          Carousel:{
+            arrowSize: 64
+          }
+        },
         token: {
           // Seed Token
-          colorPrimary: "#058f6fff",
-          colorBgLayout: "#e0b5c2",
+          colorPrimary: "var(--cyan)",
+          colorBgLayout: "var(--lightmauve)",
           borderRadius: 2,
 
           // Alias Token
-          colorBgContainer: "#f8f4e5",
+          colorBgContainer: "var(--lightcream)",
         },
       }}
     >

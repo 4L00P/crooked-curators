@@ -1,14 +1,18 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require("path");
 
-const USE_ANALYZER = false;
-const analyzerPlugin = USE_ANALYZER ? [new BundleAnalyzerPlugin()] : [];
+require('dotenv').config();
+const { DEBUG_MODE } = process.env;
+
+// const analyzerPlugin = DEBUG_MODE === "true" ? [new BundleAnalyzerPlugin()] : [];
+const watcher = DEBUG_MODE === "true" ? true : false;
+const mode = DEBUG_MODE === "true" ? "development" : "production";
 
 module.exports = {
   entry: "./src/client/index.tsx",
-  mode: "development",
-  watch: true,
+  mode: mode,
+  watch: watcher,
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist/client"),
@@ -20,7 +24,7 @@ module.exports = {
       filename: "index.html",
      }
     ),
-    ...analyzerPlugin,
+    // ...analyzerPlugin,
   ],
   resolve: {
     extensions: [".js", ".jsx", ".tsx", ".ts"],

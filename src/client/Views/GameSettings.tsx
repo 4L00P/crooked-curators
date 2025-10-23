@@ -1,16 +1,15 @@
 // Game Settings Page that pops up after hitting 'Create Game'
 import React from "react";
-import { useState, useEffect } from "react";
 
 // context
-import { useGameContext, useSocketContext } from "../context";
+import { useSocketContext } from "../context";
 // UI
 import { Button, Typography, Flex, Card } from '../antdComponents'
 // COMPONENTS
 import JoinedPlayers from "../Components/JoinedPlayers";
 
 const GameSettings = ({roomCode, players}) => {
-  const { game, setGame } = useGameContext();
+
   const { socket } = useSocketContext();
 
   const startGame = () => {

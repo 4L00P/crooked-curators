@@ -4,7 +4,7 @@ import React from 'react';
 import { useState } from 'react';
 
 import {
-  Card, Col, Row, Flex, FlexProps, Splitter, Typography, Collapse
+  Card, Col, Row, Flex
 } from '../antdComponents';
 
 // COMPONENTS
@@ -16,7 +16,7 @@ type ActiveGameProps = {
   handleArtworks: () => void;
 };
 
-const ActiveGame: React.FC = ({ handleArtworks }: ActiveGameProps) => {
+const ActiveGame: React.FC = () => {
 
   // --------------------[STATES]---------------------
 
@@ -58,7 +58,6 @@ const ActiveGame: React.FC = ({ handleArtworks }: ActiveGameProps) => {
             <ToJudging
               done={done}
               playerCount={playerCount}
-              handleArtworks={handleArtworks}
               /* isCurator prop is not being used atm */
             />
           </Card>

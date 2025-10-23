@@ -1,1 +1,0 @@
-// Avatar for profile view

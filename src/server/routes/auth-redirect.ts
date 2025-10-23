@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { Router, Request } from 'express';
+import { Router } from 'express';
 
 // authRouter is /auth/google
 const authRouter = Router();

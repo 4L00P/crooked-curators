@@ -1,4 +1,3 @@
-import { doesNotMatch } from 'assert';
 import passport from 'passport';
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { User } = require('./db/schemas/users');

@@ -1,7 +1,6 @@
 // Displays 3 random ribbons pulled from the database. One blue, one red, one white.
 
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { useDroppable } from '@dnd-kit/core';
 
@@ -30,6 +29,7 @@ type RibbonProps = {
 }
 
 export function Ribbon({ribbon, artworks}: RibbonProps) {
+
 
   // -------------------[HANDLERS]--------------------
 

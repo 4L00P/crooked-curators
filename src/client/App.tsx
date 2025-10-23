@@ -4,15 +4,12 @@ import { Route, Routes, Navigate } from "react-router-dom";
 
 import axios from "axios";
 import { Socket, io } from "socket.io-client";
-import { RawPurePanel } from "antd/es/popover/PurePanel";
 
 import {
-  Breadcrumb,
   Layout,
   theme,
   Content,
   Footer,
-  ConfigProvider,
 } from "./antdComponents";
 
 
@@ -83,6 +80,7 @@ const App: React.FC = () => {
       title: null,
       src: null,
     },
+    playerArtworks: []
   });
 
   // socket connection state
@@ -92,24 +90,9 @@ const App: React.FC = () => {
   // players state
   const [players, setPlayers] = useState([]);
 
-  // start game state
-  const [startGame, setStartGame] = useState(false);
 
   // view state - tied to game context
   const [view, setView] = useState({});
-
-  // update user function to update context - not being used atm
-  function updateUser() {
-    fetchUser()
-      .then(({ data }) => {
-        if (data) {
-          setUser({ username: data.username, loggedIn: true });
-        }
-      })
-      .catch((err) => {
-        setUser({ username: null, loggedIn: false });
-      });
-  }
 
   // --------------------[SOCKET LISTENERS]---------------------
   useEffect(() => {
@@ -119,7 +102,6 @@ const App: React.FC = () => {
 
     // --------FUNCTIONS FOR SOCKET LISTENERS ----------
 
-    // ------- ON CONNECT --------
     const onConnect = async () => {
       if (!newSocket.id) {
         console.error("Socket ID is not available");
@@ -150,7 +132,7 @@ const App: React.FC = () => {
       }
     };
 
-    // ------- ON CONNECT --------
+    
     function getRoomDetails(roomCodeObj) {
       console.log("game info from server", roomCodeObj);
       // update the room code
@@ -183,12 +165,19 @@ const App: React.FC = () => {
 
     }
 
-    // SOCKET LISTENERS
+    function artworkContext({playerArtworks}) {
+      // add the round artworks to the game context
+      setGame((oldGame) => ({...oldGame, playerArtworks: playerArtworks}))
+
+    }
+
+    // SOCKET ON
     newSocket.on("connect", onConnect);
     newSocket.on("referenceSelected", referenceSelected);
     newSocket.on("sendRoomDetails", getRoomDetails);
     newSocket.on("newRound", roundAdvance);
     newSocket.on("stageAdvance", stageAdvance);
+    newSocket.on("artworkContext", artworkContext);
 
     // SOCKET OFF
     return () => {
@@ -197,29 +186,11 @@ const App: React.FC = () => {
       newSocket.off("sendRoomDetails", getRoomDetails);
       newSocket.off("newRound", roundAdvance);
       newSocket.off("stageAdvance", stageAdvance);
+      newSocket.on("artworkContext", artworkContext);
 
       setUserSocketId(null);
     };
   }, []);
-
-  // -------------------[ARTWORKS]--------------------
-
-  const [roundArtworks, setRoundArtworks] = useState([]);
-
-  const handleGetRoundArtworks = () => {
-    // send get request to /artworks to retrieve images with game code for querying
-    axios
-      .get(`/artworks/${game.code}`)
-      .then(({ data }) => {
-        console.log(data);
-
-        // update round artworks state to array of artwork objects
-        setRoundArtworks(data);
-      })
-      .catch((err) => {
-        console.error("Failed to GET artworks from round: CLIENT:", err);
-      });
-  };
 
 
   // --------------------[RENDER]---------------------
@@ -272,7 +243,6 @@ const App: React.FC = () => {
                       <>
                         <SwitchView view={view} />
                         <ActiveGame
-                          handleArtworks={handleGetRoundArtworks}
                         />
                       </>
                     }
@@ -282,11 +252,7 @@ const App: React.FC = () => {
                     element={
                       <>
                         <SwitchView view={view} />
-                        <RoundJudging
-                          artworks={roundArtworks}
-                          handleArtworks={handleGetRoundArtworks}
-                          setArtworks={setRoundArtworks}
-                        />
+                        <RoundJudging />
                       </>
                     }
                   />

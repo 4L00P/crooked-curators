@@ -2,14 +2,13 @@ import { createContext, useContext } from 'react';
 import axios from 'axios';
 
 import { Ribbon as RibbonType } from './Components/types';
+import { Artwork as ArtworkType } from './Components/types';
 
 // USER CONTEXT HANDLING
 
 export interface User {
   username: string;
   loggedIn: boolean;
-  // setUser: (user) => void; // I don't really know what void does here, we ball though
-  // ^^ void means nothing is returned
 }
 
 export interface UserContextType {
@@ -55,6 +54,7 @@ export interface Game {
   curator: Player | null;
   players: Player[];
   reference: Reference | { title: null; src: null;}
+  playerArtworks: ArtworkType[];
 }
 
 export interface GameContextType {
@@ -75,7 +75,6 @@ export function useGameContext() {
 
 
 import { Socket } from "socket.io-client";
-import { ArrayDataType } from 'sequelize';
 
 // SOCKET CONTEXT HANDLING
 

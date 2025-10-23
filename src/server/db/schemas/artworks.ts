@@ -4,6 +4,7 @@ import { DataTypes } from 'sequelize';
 import { Ribbon } from "./ribbons"
 import { Round } from "./rounds";
 import { User } from "./users";
+import { Game } from "./games"
 
 const Artwork = sequelize.define('artwork', {
   id: {
@@ -40,7 +41,14 @@ const Artwork = sequelize.define('artwork', {
     },
     allowNull: true
   },
-
+  game_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: Game,
+      key: 'id'
+    },
+    allowNull: false
+  }
 });
 
 

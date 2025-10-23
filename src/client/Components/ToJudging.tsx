@@ -1,8 +1,6 @@
 import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
 
-import { Col, Row, Button, Tooltip } from "../antdComponents";
+import { Button } from "../antdComponents";
 
 import { useSocketContext } from "../context";
 
@@ -10,15 +8,13 @@ type ToJudgingProps = {
   done: number;
   playerCount: number;
   // isCurator: boolean; // not being used atm
-  handleArtworks: () => void;
 };
 
-const ToJudging = ({ done, playerCount, handleArtworks }: ToJudgingProps) => {
+const ToJudging = ({ done, playerCount }: ToJudgingProps) => {
   
   const { socket } = useSocketContext();
 
   const handleClick = () => {
-    handleArtworks();
     socket?.emit("toJudging");
   };
 

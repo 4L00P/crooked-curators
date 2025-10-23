@@ -1,21 +1,10 @@
 // contains a list of usernames from joined users on game settings page
-import React, { useEffect, useState } from "react";
+import React from "react";
 import List from "antd/es/list"
-
-//import { socket } from '../socket'
-
-// join code variable
-let joinCode = '';
 
 
 const JoinedPlayers = ({players}) => {
   
-
-  // socket.on("playerConnection", (joinedRoom) => {
-  //   setPlayers([...joinedRoom.username])
-  // })
-  
-
   return (
     <div>
       <h2>Joined players:</h2>
@@ -33,9 +22,7 @@ const JoinedPlayers = ({players}) => {
 
     </div>
   );
-  
-  
-      
+       
 };
 
 export default JoinedPlayers;

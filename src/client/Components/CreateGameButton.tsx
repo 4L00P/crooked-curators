@@ -8,7 +8,8 @@ import { useSocketContext, useUserContext } from '../context';
 
 const buttonStyle: React.CSSProperties = {
   width: '100%',
-  height: 50
+  height: 50,
+  marginTop: 30
 }
 
 const CreateGameButton = ({username}) => {
@@ -38,8 +39,17 @@ const CreateGameButton = ({username}) => {
     <Flex style={buttonStyle} justify="center" align="center">
         <Link to='/game-settings' >
 
-          <Button onClick={handleCreateGame} >
-            Create Game
+          <Button
+            onClick={handleCreateGame}
+            variant="solid"
+            style={{
+              backgroundColor:"#1ed0a6ff",
+              width: 200,
+              height: 50,
+              borderRadius: 8
+            }}
+          >
+            Create a Game!
           </Button>
 
         </Link>

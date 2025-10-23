@@ -29,7 +29,7 @@ const GameCodeJoin = ({username}) => {
 
   return (
     <div>
-      <Typography>Enter Game Code to Join a Room</Typography>
+      <h3>Enter Game Code to Join a Room</h3>
       <p />
       <Space.Compact style={{ width: "100%" }}>
         <Input placeholder="Game Code" onChange={handleInput} />

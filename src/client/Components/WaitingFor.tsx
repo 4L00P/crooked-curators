@@ -2,7 +2,6 @@
 // curator is selecting or while artists are painting
 
 import React from "react";
-import { useState} from "react";
 import { Card, Flex } from '../antdComponents'
 
 // import the game context
@@ -10,7 +9,7 @@ import { useGameContext } from "../context";
 
 const WaitingFor = () => {
 
-  const { game, setGame } = useGameContext()
+  const { game } = useGameContext();
   // waiting on will either be 'curator' or 'artists'
   let waitingOn = 'curator'
 

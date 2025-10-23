@@ -1,16 +1,11 @@
 // At the end of a round, all artworks are displayed here for judging
 
 import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { useGameContext } from '../context';
-import axios from 'axios';
+import { useGameContext, useSocketContext } from '../context';
 
 import {
   Divider,
-  Col,
-  Row,
   Flex,
-  Button,
 } from '../antdComponents';
 
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
@@ -24,7 +19,6 @@ import LockInJudging from './LockInJudging';
 // ---------------------[TYPES]---------------------
 
 import { Artwork as ArtworkTypes, Ribbon as RibbonTypes } from './types';
-import { RoundJudging as RoundJudgingProps } from './types';
 
 // ---------------------[STYLE]---------------------
 
@@ -48,13 +42,16 @@ const STATUS = [
 
 // -------------------[COMPONENT]-------------------
 
-const RoundJudging: React.FC = ({ artworks, setArtworks, handleArtworks }: RoundJudgingProps) => {
+const RoundJudging: React.FC = () => {
 
   // -------------------[CONTEXT]---------------------
 
-  const { ribbons } = useGameContext().game;
+  const { ribbons, playerArtworks } = useGameContext().game;
+  const { socket } = useSocketContext();
  
+  
   // -------------------[HANDLERS]--------------------
+
 
   // handles changing artwork's status upon dropping it in a container
   const handleDragEnd = (e: DragEndEvent) => {
@@ -68,24 +65,28 @@ const RoundJudging: React.FC = ({ artworks, setArtworks, handleArtworks }: Round
     // grabs the STATUS/RIBBON color for dropped column
     const newStatus = over.id as ArtworkTypes['status'];
 
-    // ignore error, this works
-    setArtworks(() => artworks.map(artwork => artwork.id === artworkId ? { ...artwork, status: newStatus } : artwork))
+
+    // function that updates the artwork status with RED, WHITE, or BLUE
+    const mapArtworks = () => {
+      // update the status of the artwork for drag
+      return playerArtworks.map(artwork => artwork.id === artworkId ? { ...artwork, status: newStatus } : artwork)
+    }
+
+    // dragArtwork sends the artworks with updated status 
+    // the socket emits back 'artworkContext' which updates for everyone in the room
+    socket?.emit('dragArtwork', mapArtworks());
+
   }
 
-  // -------------------[LIFECYCLE]-------------------
 
-  // pulling ribbons upon render
-  useEffect(() => {
-    handleArtworks();
-  }, [])
-
+ 
   // --------------------[RENDER]---------------------
 
   return (
     <>
       <Flex gap="middle" align="center" vertical>
         <Flex style={ribbonsStyle} justify='space-evenly' align='center'>
-          <LockInJudging artworks={artworks} ribbons={ribbons} />
+          <LockInJudging />
         </Flex>
       </Flex>
       <br />
@@ -97,7 +98,8 @@ const RoundJudging: React.FC = ({ artworks, setArtworks, handleArtworks }: Round
                 <Ribbon
                   key={ribbon.color}
                   ribbon={ribbon}
-                  artworks={artworks.filter(artwork => artwork.status === ribbon.color)} />
+                  artworks={playerArtworks.filter(artwork => artwork.status === ribbon.color)} 
+                />
               )
             })}
           </Flex>
@@ -112,7 +114,7 @@ const RoundJudging: React.FC = ({ artworks, setArtworks, handleArtworks }: Round
                 <Forgeries
                   key={status.id}
                   status={status}
-                  artworks={artworks.filter(artwork => artwork.status === status.color)} />
+                  artworks={playerArtworks.filter(artwork => artwork.status === status.color)} />
               )
             })}
           </Flex>
