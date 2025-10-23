@@ -61,9 +61,4 @@ const syncModels = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 syncModels();
-// synchronize all models at once - drop tables/ add new fields
-// (async () => {
-//   await sequelize.sync({force: true});
-//     console.log('All models synchronized successfully.');
-// })();
 //# sourceMappingURL=index.js.map

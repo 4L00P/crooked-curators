@@ -21,7 +21,7 @@ const passport_1 = __importDefault(require("passport"));
 // run the database file
 const db = require('./db/index');
 // --------------ENV------------------
-const { SESSION_SECRET, DEBUG_MODE } = process.env;
+const { SESSION_SECRET, BASE_URL, DEBUG_MODE } = process.env;
 // ------INIT GOOGLE STRATEGY--------
 // require auth to initialize google strategy
 require('./auth');
@@ -41,7 +41,7 @@ app.use(passport_1.default.initialize());
 app.use(passport_1.default.session());
 // path to static files
 // make different client paths depending on DEBUG_MODE true or false
-const CLIENT = DEBUG_MODE ? path.resolve(__dirname, '../../dist/client') : path.resolve(__dirname, '../client');
+const CLIENT = DEBUG_MODE === "true" ? path.resolve(__dirname, '../../dist/client') : path.resolve(__dirname, '../client');
 const HTML = path.resolve(CLIENT, './index.html');
 // parsing
 app.use(bodyParser.json());
@@ -92,7 +92,7 @@ app.get('/{*any}', (req, res) => {
 // port and listening
 const port = 3000;
 server.listen(port, () => {
-    return console.log(`Express is listening at http://localhost:${port}`);
+    return console.log(`Express is listening at ${BASE_URL}`);
 });
 // run the sockets/index.ts file
 require('./sockets');

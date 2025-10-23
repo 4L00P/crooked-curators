@@ -105,7 +105,6 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
             gamesPlayersMap.set(joinAttempt.roomCode, playersSocketIds);
             //----------------------------------------------------------------------
             // to the specific room, emit the room code - make it visible for everyone
-            //TODO - update context with code, players array
             exports.io.to(joinAttempt.roomCode).emit('sendRoomDetails', {
                 roomCode: joinAttempt.roomCode,
                 game: roomExists,
@@ -158,7 +157,6 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
             curator = yield users_1.User.findOne({
                 where: { id: allPlayers[roundCount].user_id }
             });
-            console.log('allPlayers array:', allPlayers);
             // assign currentRound, then add round to database
             currentRound = yield rounds_1.Round.create({
                 game_id: currentGame.id,
@@ -193,7 +191,8 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
                     const player = yield users_1.User.findOne({ where: { id: user_id } });
                     // add only the parts needed for other players
                     return { username: player.username, finished: false };
-                }))
+                })),
+                playerArtworks: []
             };
             // player emit - targets game room except curator
             // pass in roundState
@@ -228,11 +227,25 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
     // _______________________________________________________________________________
     // TO JUDGING
     // emitted from client when judge hits 'To Judging!' button
-    socket.on('toJudging', () => {
+    socket.on('toJudging', () => __awaiter(void 0, void 0, void 0, function* () {
+        // add the artworks to the context 
+        const handleGetRoundArtworks = () => __awaiter(void 0, void 0, void 0, function* () {
+            // send get request to /artworks to retrieve images with game code for querying
+            yield axios_1.default.get(`${BASE_URL}/artworks/judging/${currentGame.gameCode}`)
+                .then(({ data }) => {
+                // update round artworks state to array of artwork objects
+                // setRoundArtworks(data);
+                exports.io.to(currentGame.gameCode).emit('artworkContext', { playerArtworks: data });
+            })
+                .catch((err) => {
+                console.error("Failed to GET artworks from round: SOCKET", err);
+            });
+        });
+        yield handleGetRoundArtworks();
         // call advanceStage stage function 
         // update stage of the room from painting -> judging
         exports.io.to(currentGame.gameCode).emit('stageAdvance', 'judging');
-    });
+    }));
     // _______________________________________________________________________________
     // TO LOBBY
     // emitted from client when someone hits the 'Play Again?' button in the gallery
@@ -258,13 +271,11 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
         // update stage of the room from reference to painting
         exports.io.to(currentGame.gameCode).emit('stageAdvance', 'painting');
     }));
+    // _______________________________________________________________________________
+    // ARTWORK DRAG - ROUND JUDGING
+    socket.on('dragArtwork', (playerArtworks) => {
+        // emit the new artwork context to eveyone in the room
+        exports.io.to(currentGame.gameCode).emit('artworkContext', { playerArtworks });
+    });
 })); // end of connection
-// NOT WORKING - attempted to use reload to maintain session connection
-// socket.request.session.reload((err) => {
-//   if (err) {
-//     return socket.disconnect();
-//   }
-//   socket.request.session.count++;
-//   socket.request.session.save();
-// });
 //# sourceMappingURL=index.js.map

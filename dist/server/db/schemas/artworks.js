@@ -9,6 +9,7 @@ const sequelize_1 = require("sequelize");
 const ribbons_1 = require("./ribbons");
 const rounds_1 = require("./rounds");
 const users_1 = require("./users");
+const games_1 = require("./games");
 const Artwork = index_1.default.define('artwork', {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -44,6 +45,14 @@ const Artwork = index_1.default.define('artwork', {
         },
         allowNull: true
     },
+    game_id: {
+        type: sequelize_1.DataTypes.INTEGER,
+        references: {
+            model: games_1.Game,
+            key: 'id'
+        },
+        allowNull: false
+    }
 });
 exports.Artwork = Artwork;
 //# sourceMappingURL=artworks.js.map
