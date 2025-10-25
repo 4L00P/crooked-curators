@@ -230,9 +230,11 @@ artworkRouter.patch('/ribbons', ({ body }, res) => {
       }
     })
       .then(() => {
+        res.send(200)
         console.log('Successful PATCH for Artwork with Ribbon awarded.')
       })
       .catch((err: Error) => {
+        res.send(500)
         console.error('Failed to PATCH Artwork with Ribbon awarded: SERVER:', err);
       })
   })
