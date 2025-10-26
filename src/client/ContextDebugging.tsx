@@ -1,6 +1,6 @@
 import { useUserContext, useGameContext } from "./context"
 
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 
 const ContextDebugging = () => {
 
