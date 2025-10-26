@@ -17,16 +17,19 @@ app.render(
         components:{
           Carousel:{
             arrowSize: 64
+          },
+          Button:{
+            primaryColor: "var(--content)",
           }
         },
         token: {
           // Seed Token
-          colorPrimary: "var(--cyan)",
-          colorBgLayout: "var(--lightmauve)",
+          colorPrimary: "red",
+          colorBgLayout: "var(--background)",
           borderRadius: 2,
 
           // Alias Token
-          colorBgContainer: "var(--lightcream)",
+          colorBgContainer: "var(--content)",
         },
       }}
     >

@@ -95,11 +95,6 @@ const CanvasTools: React.FC = (props: propsTypes) => {
           </Button>
         </Tooltip>
       </Row>
-      <br />
-      <br />
-      <Row>
-        <CanvasColorPicker changeColor={changeColor} />
-      </Row>
     </Col>
   )
 }

@@ -9,6 +9,7 @@ import { User } from '../db/schemas/users';
 import { User_Game } from '../db/schemas/users-games';
 import { Round } from '../db/schemas/rounds';
 
+
 // session secret for express session
 const { SESSION_SECRET, BASE_URL } = process.env;
 
@@ -48,9 +49,10 @@ let currentGame;
 let currentRound;
 let curator;
 let roundCount = 0
-let allPlayers = [];
+let allPlayers: any = [];
 let stage = 'lobby'
 
+let doneCount = 0;
 // _______________________________________________________________________________
 io.on('connection', async socket => {
 
@@ -135,14 +137,42 @@ io.on('connection', async socket => {
   // _______________________________________________________________________________
   // STARTING A GAME 
   socket.on('startGame', async () => {
-    // query user_games table, find users where gameid = current game id
+    // query user_games table, find users where game id === current game id
     // sort by created at order
-    allPlayers = await User_Game.findAll({
+    const allUsersGames = await User_Game.findAll({
       where: {
         game_id: currentGame.id
       },
       order: [['createdAt', 'ASC']]
     })
+
+    // get get player info and only include id, username, and socketId
+    const allPlayersData = allUsersGames.map(async (player: any) => {
+      return await User.findOne({
+        where: {
+          id: player.user_id
+        }
+      }, {
+        attributes: ['id', 'username', 'socketId']
+      })
+    })
+
+    // promise all players to ensure that they all resolve
+    let promisedPlayers = await Promise.all(allPlayersData);
+
+    // reduce promised players to create new objects without the DB nesting
+    allPlayers = promisedPlayers.reduce((acc, {dataValues}) => {
+      const { id, username, socketId } = dataValues;
+
+      const obj = {
+        id: id,
+        username: username,
+        socketId: socketId
+      }
+
+      acc.push(obj);
+      return acc;
+    }, [])
 
     // calls advance round with prev round of null
     advanceRound(null)
@@ -153,7 +183,11 @@ io.on('connection', async socket => {
   async function advanceRound(prevRound: number | null) {
     console.log('advancing round!')
     console.log('allPlayers length', allPlayers.length, 'prevRound', prevRound, 'roundCount', roundCount)
+    // console.log(allPlayers);
 
+    // reassign doneCount to 0
+    doneCount = 0;
+    
     // ROUND COUNT LOGIC
     if (prevRound === null) {
       // if prevRound is null, it's the first round
@@ -169,7 +203,7 @@ io.on('connection', async socket => {
     
     // select curator based on roundCount index on the allPlayers array
     curator = await User.findOne({
-      where: { id: allPlayers[roundCount].user_id }
+      where: { id: allPlayers[roundCount].id }
     })
     
 
@@ -207,11 +241,8 @@ io.on('connection', async socket => {
         username: curator.username,
         finished: false
       },
-      players: allPlayers.map(async ({ user_id }) => {
-        const player = await User.findOne({ where: { id: user_id } })
-        // add only the parts needed for other players
-        return { username: player.username, finished: false }
-      }),
+      players: allPlayers,
+      doneCount: 0,
       playerArtworks: []
     }
 
@@ -315,6 +346,18 @@ io.on('connection', async socket => {
     io.to(currentGame.gameCode).emit('artworkContext', {playerArtworks})
     
   })
+
+  // _______________________________________________________________________________
+  // DONE WITH ARTWORK - ACTIVE GAME
+
+  socket.on('submit', () => {
+    // add to doneCount
+    doneCount += 1;
+    
+    // emit the done count to the room
+    io.to(currentGame.gameCode).emit('submit', doneCount)
+  })
+
 
 
 }); // end of connection

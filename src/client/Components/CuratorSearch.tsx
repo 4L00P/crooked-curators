@@ -1,18 +1,20 @@
 // Contains the Reference and ReferenceSearch components
 
 import React, { useState, useContext } from "react";
-import { Divider, Flex, Button } from "../antdComponents";
+import { Divider, Flex, Button, Popconfirm, Row, Col } from "../antdComponents";
 
 import ReferenceSearch from "./ReferenceSearch";
 import Reference from "./Reference";
-import { SocketContext } from "../context";
+import ArtSubmitCount from "./ArtSubmitCount";
+import { SocketContext, GameContext } from "../context";
 import axios from "axios";
 
 const CuratorSearch = () => {
   const [selected, setSelected] = useState(0);
   const [results, setResults] = useState([]);
-  const [confirmed, setConfirmed] = useState(false)
-  const { socket } = useContext(SocketContext)
+  const [confirmed, setConfirmed] = useState(false);
+  const { socket } = useContext(SocketContext);
+  const { game } = useContext(GameContext);
 
   const nextResult = () => {
     setSelected(selected + 1);
@@ -35,26 +37,85 @@ const CuratorSearch = () => {
       });
   };
 
-  const selectReference = function (){
-    socket?.emit('curatorSelect', results[selected])
-  }
+  const selectReference = function () {
+    socket?.emit("curatorSelect", results[selected]);
+    setConfirmed(true);
+  };
   return (
     <Flex gap="middle" align="center" vertical>
-      <Divider>
+
+        <div>
         <ReferenceSearch handleSearch={handleSearch} disabled={results.length}/>
-        {(results.length > 0 && results.length < 4) ? `That search didn't get enough results, you can try again` : `Choose a Reference!`}
-      </Divider>
-      <Divider>
+        <p>{(results.length > 0 && results.length < 4) ? `That search didn't get enough results, you can try again` : `Choose a Reference!`}</p>
+        </div>
+        <ArtSubmitCount />
+
+
         <Reference {...results[selected]} />
         <Button onClick={nextResult} disabled={selected >= results.length - 1}>
           {results.length === 0
             ? "Search For Some Inspiration!"
             : `Result ${selected + 1} out of ${results.length}`}
         </Button>
-        <Button onClick={selectReference} disabled={confirmed || results.length === 0}>{!confirmed ? `Choose this Piece` : `Reference Selected!`}</Button>
-      </Divider>
+        <Popconfirm
+          title="Are you sure to select this reference?"
+          onConfirm={selectReference}
+          onCancel={() => {}}
+          okText="Yes"
+          cancelText="No"
+        >
+        <Button disabled={confirmed || results.length === 0}>{confirmed ? `Reference Selected!` : `Choose this Piece`}</Button>
+        </Popconfirm>
+
     </Flex>
   );
+  // return (
+  //   <>
+  //     <Row gutter={2}>
+  //       <Col span={18}>
+  //         <Flex gap="middle" align="center" vertical>
+  //           <Flex style={{ width: 500 }} justify="space-evenly" align="center">
+  //             <ReferenceSearch
+  //               handleSearch={handleSearch}
+  //               disabled={results.length}
+  //             />
+  //             <p>
+  //               {results.length > 0 && results.length < 4
+  //                 ? `That search didn't get enough results, you can try again`
+  //                 : `Choose a Reference!`}
+  //             </p>
+  //           </Flex>
+  //         </Flex>
+  //         <Divider>
+  //           <Reference {...results[selected]} />
+  //           <Button
+  //             onClick={nextResult}
+  //             disabled={selected >= results.length - 1}
+  //           >
+  //             {results.length === 0
+  //               ? "Search For Some Inspiration!"
+  //               : `Result ${selected + 1} out of ${results.length}`}
+  //           </Button>
+  //           <Popconfirm
+  //             title="Are you sure to select this reference?"
+  //             onConfirm={selectReference}
+  //             onCancel={() => {}}
+  //             okText="Yes"
+  //             cancelText="No"
+  //           >
+  //             <Button disabled={confirmed || results.length === 0}>
+  //               {confirmed ? `Reference Selected!` : `Choose this Piece`}
+  //             </Button>
+  //           </Popconfirm>
+  //         </Divider>
+  //       </Col>
+
+  //       <Col span={3}>
+  //         <ArtSubmitCount />
+  //       </Col>
+  //     </Row>
+  //   </>
+  // );
 };
 
 export default CuratorSearch;

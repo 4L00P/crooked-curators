@@ -39,7 +39,7 @@ const GameCodeJoin = ({username}) => {
             onClick={joinGame}
             disabled={!socket || !roomCode}
           >
-            <FaArrowCircleRight />
+            <FaArrowCircleRight color="var(--nav)" />
           </Button>
         </Link>
         

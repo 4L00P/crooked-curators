@@ -38,9 +38,11 @@ export async function fetchUser() {
 // GAME CONTEXT HANDLING
 
 export interface Player {
+  id: number;
+  socketId: string;
   username: string;
-  finished: boolean;
 }
+
 export interface Reference {
   title: string;
   src: string;
@@ -53,6 +55,7 @@ export interface Game {
   ribbons: RibbonType[];
   curator: Player | null;
   players: Player[];
+  doneCount: number;
   reference: Reference | { title: null; src: null;}
   playerArtworks: ArtworkType[];
 }

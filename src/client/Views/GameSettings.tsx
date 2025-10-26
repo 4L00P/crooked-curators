@@ -36,11 +36,16 @@ const GameSettings = ({roomCode, players}) => {
       <Flex align='right' justify='right'>
         <Button 
           type='primary'
-          size='large'
           onClick={startGame}
           disabled={!socket || !roomCode}
+          style={{
+            backgroundColor: "var(--nav)",
+            borderRadius: 8,
+            paddingBlock: 20,
+            paddingInline: 30,
+          }}
         >
-          START GAME
+          <h3>Start Game!</h3>
         </Button>
       </Flex>
     </div>

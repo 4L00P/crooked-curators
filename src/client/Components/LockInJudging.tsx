@@ -22,7 +22,7 @@ const LockInJudging = () => {
 
   const { socket } = useSocketContext();
 
-  const { ribbons, playerArtworks } = useGameContext().game;
+  const { ribbons, playerArtworks, role } = useGameContext().game;
 
   // -------------------[HANDLERS]--------------------
 
@@ -83,11 +83,19 @@ const LockInJudging = () => {
 
   // --------------------[RENDER]---------------------
 
+  // only render the button for the curator
+  if (role !== "curator"){
+    return null
+  }
+
   return (
-    <Button onClick={() => {
+    <Button
+      onClick={() => {
       triggerNextRound();
       handleLockIn();
-    }}>Lock In Ribbons</Button>
+    }}>
+      Lock In Ribbons
+    </Button>
   )
 
   // if(lockInReady === true){

@@ -44,6 +44,7 @@ import Image from 'antd/es/image'
 import type GetProps from 'antd/es/index';
 import Input from 'antd/es/input'
 import Search from 'antd/es/input'
+import Popconfirm from 'antd/es/popconfirm';
 
 // ActiveGame View
 
@@ -63,5 +64,5 @@ export {
     ConfigProvider, Button, ReloadOutlined, Space,
     GetProps, Image, Input, Search,
     Card, Splitter, Typography, Collapse,
-    Carousel, Tooltip, Timeline
+    Carousel, Tooltip, Timeline, Popconfirm
 }

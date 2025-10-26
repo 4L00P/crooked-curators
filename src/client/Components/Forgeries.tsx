@@ -10,15 +10,15 @@ import Artwork from './Artwork';
 import {
   Flex,
   FlexProps,
+  Row,
+  Col
 } from '../antdComponents'
 
 import { Ribbon as RibbonType, Artwork as ArtworkTypes } from './types'
 
 const ribbonsStyle: React.CSSProperties = {
-  width: '100%',
-  height: '100%',
-  // height: '100%',
-  borderRadius: 6,
+  minWidth: 1000,
+  minHeight: 500,
 };
 
 type ArtworkStatusProps = {
@@ -39,16 +39,18 @@ export function Forgeries({ status, artworks }: ArtworkStatusProps) {
   return (
     <>
       <div ref={setNodeRef}>
-        <Flex gap="middle" align="center" vertical >
-          <Flex style={ribbonsStyle} justify='space-evenly' align='center' wrap>
-            {artworks.map(artwork => {
-              return (
-                <Artwork key={artwork.id} artwork={artwork} size={{ width: 350 }}/>
-              )
-            })}
-          </Flex>
+      <Flex gap="middle" align="center" vertical>
+        <Flex style={ribbonsStyle} justify='space-evenly' align='flex-start'>
+          <Col>
+            <Row>
+              {artworks.map(artwork => {
+                return <Artwork key={artwork.id} artwork={artwork} size={{ width: 350 }} />
+              })}
+            </Row>
+          </Col>
         </Flex>
-      </div>
+      </Flex>
+    </div>
     </>
   )
 };

@@ -16,6 +16,7 @@ import {
 // -------------------[COMPONENTS]------------------
 import NavBar from "./Components/NavBar";
 import SwitchView from "./SwitchView";
+import ContextDebugging from "./ContextDebugging";
 
 import Homepage from "./Views/Homepage";
 import Profile from "./Views/Profile";
@@ -76,6 +77,7 @@ const App: React.FC = () => {
     role: null,
     ribbons: [],
     players: [],
+    doneCount: 0,
     reference: {
       title: null,
       src: null,
@@ -171,6 +173,11 @@ const App: React.FC = () => {
 
     }
 
+    function submit(doneCount: number) {
+      // update the game context for everyone in the room with the done count
+      setGame((oldGame) => ({...oldGame, doneCount: doneCount}))
+    }
+
     // SOCKET ON
     newSocket.on("connect", onConnect);
     newSocket.on("referenceSelected", referenceSelected);
@@ -178,6 +185,7 @@ const App: React.FC = () => {
     newSocket.on("newRound", roundAdvance);
     newSocket.on("stageAdvance", stageAdvance);
     newSocket.on("artworkContext", artworkContext);
+    newSocket.on("submit", submit);
 
     // SOCKET OFF
     return () => {
@@ -186,7 +194,8 @@ const App: React.FC = () => {
       newSocket.off("sendRoomDetails", getRoomDetails);
       newSocket.off("newRound", roundAdvance);
       newSocket.off("stageAdvance", stageAdvance);
-      newSocket.on("artworkContext", artworkContext);
+      newSocket.off("artworkContext", artworkContext);
+      newSocket.off("submit", submit);
 
       setUserSocketId(null);
     };
@@ -202,14 +211,12 @@ const App: React.FC = () => {
 
           <Layout>
             <NavBar />
-            <div>{`User Context: ${user.username}, ${user.loggedIn
-              } \n Game Context: ${Object.keys(game).map(
-                (key) => key + ":" + game[key]
-              )}`}</div>
+            <ContextDebugging />            
             <Content
               style={{
+                marginTop: "2%",
                 padding: "0 15%",
-                color: "#3B262C",
+                color: "var(--darkerbrown)",
               }}
             >
               <br />

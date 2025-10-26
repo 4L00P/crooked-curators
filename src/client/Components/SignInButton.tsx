@@ -23,16 +23,16 @@ export const SignInButton = () => {
 
   return (
     <>
-      {user.loggedIn ? (
+      {user.loggedIn && user.username !== undefined ? (
         <li>
           <Link onClick={handleSignOut} to="/" >
-            Sign Out
+            <h4>Sign Out</h4>
           </Link>
         </li>
       ) : (
         <li>
           <a href="/auth/google/">
-            Sign-In
+            <h4>Sign In</h4>
           </a>
         </li>
       )}

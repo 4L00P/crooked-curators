@@ -18,7 +18,6 @@ const ReferenceSearch = ({ handleSearch, disabled }) => {
       allowClear
       enterButton="Search"
       size="large"
-      disabled={disabled > 3}
       onSearch={(...args)=>{
         handleSearch(onSearch(...args))
       }}

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useUserContext } from '../context';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 import { SignInButton } from './SignInButton';
 
@@ -6,14 +7,17 @@ import { NavBar as NavBarTypes } from './types';
 
 const NavBar: React.FC = (props: NavBarTypes) => {
 
+  const { username } = useUserContext().user;
+
   return (
     <nav className="new-nav">
       {/* <a href='/' className='site-title' style={{...aStyle, ...titleStyle}} >Crooked Curators</a> */}
       <Link to='/' className='site-title' reloadDocument={true}>
-        Crooked Curators
+        <h4>Crooked Curators</h4>
       </Link>
       <ul>
-        <CustomLink to='/profile'>Profile</CustomLink>
+        {/* <CustomLink to='/profile'>Profile</CustomLink> */}
+        <h4>{username}</h4>
         <SignInButton />
       </ul>
     </nav>

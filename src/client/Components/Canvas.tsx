@@ -15,10 +15,12 @@ import {
   Tooltip
 } from '../antdComponents';
 
+import { Slider } from 'antd'
+
 import { IoArrowUndoSharp, IoArrowRedoSharp } from "react-icons/io5";
 import { FaPenNib, FaEraser, FaRegSave, FaDownload } from 'react-icons/fa';
 
-import { useGameContext } from '../context';
+import { useGameContext, useSocketContext } from '../context';
 
 import { Stage, Layer, Line, Text, Rect } from 'react-konva';
 
@@ -27,10 +29,11 @@ import { Stage, Layer, Line, Text, Rect } from 'react-konva';
 import CanvasTools from './CanvasTools';
 import SubmitArtwork from './SubmitArtwork';
 import CanvasColorPicker from './ColorPicker';
+import ArtSubmitCount from '../Components/ArtSubmitCount';
 
 // ---------------------[TYPES]---------------------
 
-import { Canvas as CanvasPropTypes } from './types';
+// import { Canvas as CanvasPropTypes } from './types';
 
 // ---------------------[STYLE]---------------------
 
@@ -51,9 +54,10 @@ const canvasBoxStyle: React.CSSProperties = {
 
 // -------------------[COMPONENT]-------------------
 
-const Canvas = ({ handleDone }: CanvasPropTypes) => {
+const Canvas = () => {
 
   const { code } = useGameContext().game;
+  const { socket } = useSocketContext();
 
   // --------------------[STATES]---------------------
 
@@ -66,6 +70,7 @@ const Canvas = ({ handleDone }: CanvasPropTypes) => {
   // tools for canvas and line color state
   const [tool, setTool] = React.useState('pen');
   const [lineColor, setLineColor] = React.useState("#000000");
+  const [brushSize, setBrushSize] = React.useState(5);
 
   // history for undo/redo
   const [history, setHistory] = useState([])
@@ -81,7 +86,15 @@ const Canvas = ({ handleDone }: CanvasPropTypes) => {
   const handleMouseDown = (e) => {
     isDrawing.current = true;
     const pos = e.target.getStage().getPointerPosition();
-    setLines([...lines, { tool, points: [pos.x, pos.y], stroke: lineColor }]);
+    setLines([
+      ...lines,
+      {
+        tool,
+        points: [pos.x, pos.y],
+        stroke: lineColor,
+        strokeWidth: brushSize,
+      }
+    ]);
   };
 
   const handleMouseMove = (e) => {
@@ -132,6 +145,11 @@ const Canvas = ({ handleDone }: CanvasPropTypes) => {
         setLines([...lines, lastLine]);
       }
     }
+  };
+
+  // change brush size
+  const handleBrushSize = (e) => {
+    setBrushSize(e);
   };
 
   // save image to user's profile [currently disabled]
@@ -203,11 +221,15 @@ const Canvas = ({ handleDone }: CanvasPropTypes) => {
         .then(() => {
           console.log('Successful PUT request to s3Url: CLIENT:');
 
+          // send to socket that the art was submitted
+          socket?.emit('submit')
+
           axios.post('/artworks', {
             gameCode: code,
             imageUrl: imageUrl
           })
             .then(() => {
+
               console.log('Successfully posted artwork URL to server: CLIENT')
             })
             .catch((err) => {
@@ -228,92 +250,100 @@ const Canvas = ({ handleDone }: CanvasPropTypes) => {
   return (
     <div>
       <Divider variant="dotted" style={{ borderColor: '#3B262C' }}>
-        Canvas
+        <ArtSubmitCount />
       </Divider>
-      <Flex gap="middle" align="center" vertical>
-        <Flex style={boxStyle} justify='space-evenly' align='center'>
-          <Col>
-            <CanvasTools
-              tool={tool}
-              setTool={setTool}
-              handleUndo={handleUndo}
-              handleRedo={handleRedo}
+      {/* <Flex gap="middle" align="center" vertical> */}
+      <Flex justify='space-evenly' align='center'>
+        <Col>
+          <CanvasTools
+            tool={tool}
+            setTool={setTool}
+            handleUndo={handleUndo}
+            handleRedo={handleRedo}
+          />
+          <br />
+          <div style={{
+            display: 'inline-block',
+            height: 200,
+            // marginInlineStart: 70,
+          }}>
+            <Slider
+              vertical
+              min={1}
+              max={100}
+              defaultValue={5}
+              onChange={handleBrushSize}
             />
-          </Col>
-          <Col>
-            <br />
-          </Col>
-          <Col>
-            <div ref={containerRef} style={canvasBoxStyle}>
-              <Stage
-                width={900}
-                height={500}
-                ref={stageRef}
-                onMouseDown={handleMouseDown}
-                onMousemove={handleMouseMove}
-                onMouseup={handleMouseUp}
-                onTouchStart={handleMouseDown}
-                onTouchMove={handleMouseMove}
-                onTouchEnd={handleMouseUp}
-              >
-                <Layer>
-                  <Rect x={0} y={0} width={900} height={500} fill="white" />
-                </Layer>
-                <Layer>
-                  {lines.map((line, i) => (
-                    <Line
-                      key={i}
-                      points={line.points}
-                      stroke={line.stroke}
-                      strokeWidth={5}
-                      tension={0.5}
-                      lineCap="round"
-                      lineJoin="round"
-                      globalCompositeOperation={
-                        line.tool === 'eraser' ? 'destination-out' : 'source-over'
-                      }
-                    />
-                  ))}
-                </Layer>
-              </Stage>
-            </div>
-          </Col>
-          <Col>
-            <br />
-          </Col>
-          <Col>
-            <Row>
-              <Tooltip title="Save to profile">
-                <Button onClick={handleSaveToProfile} disabled>
-                  <FaRegSave />
-                </Button>
-              </Tooltip>
-            </Row>
-            <p />
-            <Row>
-              <Tooltip title="Download">
-                <Button onClick={handleDownload}>
-                  <FaDownload />
-                </Button>
-              </Tooltip>
-            </Row>
-            <br />
-            <br />
-            <br />
-            <br />
-            <Row>
-              <CanvasColorPicker changeColor={setLineColor} />
-            </Row>
-            <br />
-            <br />
-            <br />
-            <br />
-            <Row>
-              <SubmitArtwork handleSubmitImage={handleSubmitImage} handleDone={handleDone} />
-            </Row>
-          </Col>
-        </Flex>
+          </div>
+        </Col>
+        <Col>
+          <div ref={containerRef} style={canvasBoxStyle}>
+            <Stage
+              width={900}
+              height={500}
+              ref={stageRef}
+              onMouseDown={handleMouseDown}
+              onMousemove={handleMouseMove}
+              onMouseup={handleMouseUp}
+              onTouchStart={handleMouseDown}
+              onTouchMove={handleMouseMove}
+              onTouchEnd={handleMouseUp}
+            >
+              <Layer>
+                <Rect x={0} y={0} width={900} height={500} fill="white" />
+              </Layer>
+              <Layer>
+                {lines.map((line, i) => (
+                  <Line
+                    key={i}
+                    points={line.points}
+                    stroke={line.stroke}
+                    strokeWidth={line.strokeWidth}
+                    tension={0.5}
+                    lineCap="round"
+                    lineJoin="round"
+                    globalCompositeOperation={
+                      line.tool === 'eraser' ? 'destination-out' : 'source-over'
+                    }
+                  />
+                ))}
+              </Layer>
+            </Stage>
+          </div>
+        </Col>
+        <Col>
+          <Row>
+            <Tooltip title="Save to profile">
+              <Button onClick={handleSaveToProfile} disabled>
+                <FaRegSave />
+              </Button>
+            </Tooltip>
+          </Row>
+          <p />
+          <Row>
+            <Tooltip title="Download">
+              <Button onClick={handleDownload}>
+                <FaDownload />
+              </Button>
+            </Tooltip>
+          </Row>
+          <br />
+          <br />
+          <br />
+          <br />
+          <Row>
+            <CanvasColorPicker changeColor={setLineColor} />
+          </Row>
+          <br />
+          <br />
+          <br />
+          <br />
+          <Row>
+            <SubmitArtwork handleSubmitImage={handleSubmitImage} />
+          </Row>
+        </Col>
       </Flex>
+      {/* </Flex> */}
     </div>
   );
 };

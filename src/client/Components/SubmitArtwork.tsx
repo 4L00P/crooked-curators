@@ -7,7 +7,7 @@ import { FaCheck } from "react-icons/fa";
 
 const SubmitArtwork = (props) => {
 
-  const { handleSubmitImage, handleDone, isCurator } = props
+  const { handleSubmitImage, isCurator } = props
 
   // --------------------[STATES]---------------------
 
@@ -24,8 +24,6 @@ const SubmitArtwork = (props) => {
     // initiate saving of the canvas to the artwork/round
     handleSubmitImage();
 
-    // call handleDone to increment done count
-    handleDone();
   }
 
   // --------------------[RENDER]---------------------

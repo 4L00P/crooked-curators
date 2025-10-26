@@ -42,14 +42,15 @@ const CreateGameButton = ({username}) => {
           <Button
             onClick={handleCreateGame}
             variant="solid"
+            color="primary"
             style={{
-              backgroundColor:"#1ed0a6ff",
-              width: 200,
-              height: 50,
-              borderRadius: 8
+              backgroundColor: "var(--nav)",
+              borderRadius: 8,
+              paddingBlock: 20,
+              paddingInline: 30,
             }}
           >
-            Create a Game!
+            <h3>Create a Game!</h3>
           </Button>
 
         </Link>
