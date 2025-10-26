@@ -14,15 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.artworkRouter = void 0;
 const express_1 = require("express");
+const axios_1 = __importDefault(require("axios"));
+// -------------------[SCHEMAS]------------------
 const games_1 = require("../db/schemas/games");
 const rounds_1 = require("../db/schemas/rounds");
 const artworks_1 = require("../db/schemas/artworks");
-const axios_1 = __importDefault(require("axios"));
+const ribbons_1 = require("../db/schemas/ribbons");
+// -------------------[ROUTER]-------------------
 exports.artworkRouter = (0, express_1.Router)();
+// ----------------[POST ARTWORK]----------------
 // post artworks to database by s3 get url
 exports.artworkRouter.post('/', ({ body, user }, res) => {
-    // destructure body from request
-    // const { body, user } = req;
     // destructure game code and image url from body
     const { gameCode, imageUrl } = body;
     // search db by game code to get the game id, then rounds with that game id
@@ -50,6 +52,9 @@ exports.artworkRouter.post('/', ({ body, user }, res) => {
                 round_id: round[0].dataValues.id,
                 artist_id: user.id,
                 game_id: game.id
+            })
+                .then(() => {
+                res.sendStatus(201);
             });
         })
             .catch((err) => {
@@ -60,7 +65,8 @@ exports.artworkRouter.post('/', ({ body, user }, res) => {
         console.error('Failed to find Game with Game Code, adding Artwork: SERVER:', err);
     });
 });
-// retrieve artwork from database
+// ----------------[GET ARTWORKS]----------------
+// retrieve artworks from database for judging view
 exports.artworkRouter.get('/judging/:gameCode', ({ params, user }, res) => {
     // get user and game code from request params
     const { gameCode } = params;
@@ -90,11 +96,11 @@ exports.artworkRouter.get('/judging/:gameCode', ({ params, user }, res) => {
             })
                 .then((artworks) => __awaiter(void 0, void 0, void 0, function* () {
                 // map over artworks to add status of "FORGERIES" to each
-                // make a request while having access to s3 link and await response, reassigning source to body: URI
                 const allArtworks = yield artworks.map((_a) => __awaiter(void 0, [_a], void 0, function* ({ dataValues }) {
+                    // make status for default value. used for drag & drop in client
                     dataValues.status = 'FORGERIES';
-                    // make get request to each artwork's source s3 urls
                     const source = dataValues.source;
+                    // make a request while having access to s3 link and await response, reassigning source to body: URI
                     yield axios_1.default.get(source)
                         .then(({ data }) => {
                         dataValues.source = data.body;
@@ -103,7 +109,7 @@ exports.artworkRouter.get('/judging/:gameCode', ({ params, user }, res) => {
                 }));
                 // send array of artwork uri's back
                 Promise.all(allArtworks)
-                    .then((artworks) => res.json(artworks))
+                    .then((artworks) => res.status(200).json(artworks))
                     .catch((err) => console.error('Failed to PROMISE ALL artwork requests: SERVER:', err));
             }));
         })
@@ -115,11 +121,9 @@ exports.artworkRouter.get('/judging/:gameCode', ({ params, user }, res) => {
         console.error('Failed to find Game via Game Code: SERVER:', err);
     });
 });
-// updates artwork with ribbon awarded
-exports.artworkRouter.patch('/addRibbons', (req, res) => {
-});
 // gets all artworks with a ribbon for the ending game gallery
 // currently will just pull ALL artworks from the game
+// goal is to have only artworks that earned ribbons to show
 exports.artworkRouter.get('/gallery/:gameCode', ({ params }, res) => {
     // get game code from request params
     const { gameCode } = params;
@@ -152,7 +156,7 @@ exports.artworkRouter.get('/gallery/:gameCode', ({ params }, res) => {
             // promise all artworks to complete requests
             Promise.all(allArtworks)
                 // send array of artwork uri's back
-                .then((artworks) => res.json(artworks))
+                .then((artworks) => res.status(200).json(artworks))
                 .catch((err) => console.error('Failed to PROMISE ALL artwork requests: SERVER:', err));
         }));
     })
@@ -160,10 +164,74 @@ exports.artworkRouter.get('/gallery/:gameCode', ({ params }, res) => {
         console.error('Failed to find Game via Game Code: SERVER:', err);
     });
 });
+// retrieve artworks from the game and calculate points based on ribbons awarded
+exports.artworkRouter.get('/points/:user_id/:gameCode', ({ params }, res) => {
+    // pull user id and game code from params
+    const { user_id, gameCode } = params;
+    // find game by code
+    games_1.Game.findOne({
+        where: {
+            gameCode: gameCode
+        }
+    })
+        .then((game) => {
+        // get all artworks from the game and user
+        artworks_1.Artwork.findAll({
+            where: {
+                game_id: game.id,
+                artist_id: user_id
+            }
+        })
+            .then((artworks) => __awaiter(void 0, void 0, void 0, function* () {
+            // to accumulate player's points from each artwork
+            let playerPoints = 0;
+            // filter artworks to only artworks that have ribbons !== null
+            const artworksThatHaveRibbons = artworks.filter(({ dataValues }) => {
+                return dataValues.ribbon_id !== null;
+            });
+            // reduce over filtered artworks
+            const artworksWithRibbons = yield artworksThatHaveRibbons.reduce((acc_1, _a) => __awaiter(void 0, [acc_1, _a], void 0, function* (acc, { dataValues }) {
+                const obj = {
+                    artwork: dataValues,
+                    ribbon: {}
+                };
+                yield ribbons_1.Ribbon.findOne({
+                    where: dataValues.ribbon_id
+                }, {
+                    attributes: ['id', 'description', 'points', 'source']
+                })
+                    .then(({ dataValues }) => {
+                    // add ribbon to artwork object with points, title, and source
+                    obj.ribbon = dataValues;
+                })
+                    .catch((err) => {
+                    console.error('Failed to get A Ribbon for an Artwork: SERVER:', err);
+                });
+                acc.push(obj);
+                return acc;
+            }), []);
+            // promise all to ensure that the values resolve
+            yield Promise.all(artworksWithRibbons)
+                .catch((err) => console.error('Failed to PROMISE ALL artworks with their ribbon requests: SERVER:', err));
+            // add points to player points total
+            artworksWithRibbons.forEach((artwork) => {
+                const { points } = artwork.ribbon;
+                playerPoints += points;
+            });
+            // send back points in response
+            res.status(200).json(playerPoints);
+        }));
+    })
+        .catch((err) => {
+        console.error('Failed to find Game with GameCode: SERVER:', err);
+    });
+});
+// ---------------[PATCH ARTWORK]----------------
+// updates artwork when awarded a ribbon from judging
 exports.artworkRouter.patch('/ribbons', ({ body }, res) => {
     // pull artworks and ribbons from the body of the req
     const { artworks, ribbons } = body;
-    // console.log(ribbons);
+    // filter through ribbons to separate each ribbon for easier access
     const blueRibbon = ribbons.filter((ribbon) => ribbon.color === 'BLUE')[0];
     const whiteRibbon = ribbons.filter((ribbon) => ribbon.color === 'WHITE')[0];
     const redRibbon = ribbons.filter((ribbon) => ribbon.color === 'RED')[0];
@@ -189,7 +257,6 @@ exports.artworkRouter.patch('/ribbons', ({ body }, res) => {
         acc.push(obj);
         return acc;
     }, []);
-    console.log(artworksRibbons);
     // update db with artwork and ribbon
     artworksRibbons.forEach((artworkRibbon) => {
         artworks_1.Artwork.update({
@@ -201,8 +268,10 @@ exports.artworkRouter.patch('/ribbons', ({ body }, res) => {
         })
             .then(() => {
             console.log('Successful PATCH for Artwork with Ribbon awarded.');
+            res.sendStatus(201);
         })
             .catch((err) => {
+            res.send(500);
             console.error('Failed to PATCH Artwork with Ribbon awarded: SERVER:', err);
         });
     });

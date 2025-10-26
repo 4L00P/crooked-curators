@@ -54,6 +54,7 @@ let curator;
 let roundCount = 0;
 let allPlayers = [];
 let stage = 'lobby';
+let doneCount = 0;
 // _______________________________________________________________________________
 exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(`A player: ${socket.id} connected`);
@@ -122,14 +123,37 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
     // _______________________________________________________________________________
     // STARTING A GAME 
     socket.on('startGame', () => __awaiter(void 0, void 0, void 0, function* () {
-        // query user_games table, find users where gameid = current game id
+        // query user_games table, find users where game id === current game id
         // sort by created at order
-        allPlayers = yield users_games_1.User_Game.findAll({
+        const allUsersGames = yield users_games_1.User_Game.findAll({
             where: {
                 game_id: currentGame.id
             },
             order: [['createdAt', 'ASC']]
         });
+        // get get player info and only include id, username, and socketId
+        const allPlayersData = allUsersGames.map((player) => __awaiter(void 0, void 0, void 0, function* () {
+            return yield users_1.User.findOne({
+                where: {
+                    id: player.user_id
+                }
+            }, {
+                attributes: ['id', 'username', 'socketId']
+            });
+        }));
+        // promise all players to ensure that they all resolve
+        let promisedPlayers = yield Promise.all(allPlayersData);
+        // reduce promised players to create new objects without the DB nesting
+        allPlayers = promisedPlayers.reduce((acc, { dataValues }) => {
+            const { id, username, socketId } = dataValues;
+            const obj = {
+                id: id,
+                username: username,
+                socketId: socketId
+            };
+            acc.push(obj);
+            return acc;
+        }, []);
         // calls advance round with prev round of null
         advanceRound(null);
     }));
@@ -139,6 +163,9 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
         return __awaiter(this, void 0, void 0, function* () {
             console.log('advancing round!');
             console.log('allPlayers length', allPlayers.length, 'prevRound', prevRound, 'roundCount', roundCount);
+            // console.log(allPlayers);
+            // reassign doneCount to 0
+            doneCount = 0;
             // ROUND COUNT LOGIC
             if (prevRound === null) {
                 // if prevRound is null, it's the first round
@@ -155,7 +182,7 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
             }
             // select curator based on roundCount index on the allPlayers array
             curator = yield users_1.User.findOne({
-                where: { id: allPlayers[roundCount].user_id }
+                where: { id: allPlayers[roundCount].id }
             });
             // assign currentRound, then add round to database
             currentRound = yield rounds_1.Round.create({
@@ -187,11 +214,8 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
                     username: curator.username,
                     finished: false
                 },
-                players: allPlayers.map((_a) => __awaiter(this, [_a], void 0, function* ({ user_id }) {
-                    const player = yield users_1.User.findOne({ where: { id: user_id } });
-                    // add only the parts needed for other players
-                    return { username: player.username, finished: false };
-                })),
+                players: allPlayers,
+                doneCount: 0,
                 playerArtworks: []
             };
             // player emit - targets game room except curator
@@ -276,6 +300,14 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
     socket.on('dragArtwork', (playerArtworks) => {
         // emit the new artwork context to eveyone in the room
         exports.io.to(currentGame.gameCode).emit('artworkContext', { playerArtworks });
+    });
+    // _______________________________________________________________________________
+    // DONE WITH ARTWORK - ACTIVE GAME
+    socket.on('submit', () => {
+        // add to doneCount
+        doneCount += 1;
+        // emit the done count to the room
+        exports.io.to(currentGame.gameCode).emit('submit', doneCount);
     });
 })); // end of connection
 //# sourceMappingURL=index.js.map
