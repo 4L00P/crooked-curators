@@ -2,7 +2,7 @@
 import React from "react";
 
 // context
-import { useSocketContext } from "../context";
+import { useSocketContext, useGameContext, useUserContext } from "../context";
 // UI
 import { Button, Typography, Flex, Card } from '../antdComponents'
 // COMPONENTS
@@ -11,6 +11,7 @@ import JoinedPlayers from "../Components/JoinedPlayers";
 const GameSettings = ({roomCode, players}) => {
 
   const { socket } = useSocketContext();
+  const { username } = useUserContext().user;
 
   const startGame = () => {
     // emit a nextStage event to server
@@ -34,20 +35,32 @@ const GameSettings = ({roomCode, players}) => {
       <br></br>
 
       <Flex align='right' justify='right'>
-        <Button 
-          type='primary'
-          onClick={startGame}
-          disabled={!socket || !roomCode}
-          style={{
-            backgroundColor: "var(--nav)",
-            borderRadius: 8,
-            paddingBlock: 20,
-            paddingInline: 30,
-          }}
-        >
-          <h3>Start Game!</h3>
-        </Button>
+        <div style={{
+          display: username === players[0] ? 'block' : 'none'
+        }}>
+          <Button 
+            type='primary'
+            onClick={startGame}
+            disabled={!socket || !roomCode}
+            style={{
+              backgroundColor: "var(--nav)",
+              borderRadius: 8,
+              paddingBlock: 20,
+              paddingInline: 30,
+            }}
+          >
+            <h3>Start Game!</h3>
+          </Button>
+        </div>
+
+        <div style={{
+          display: username === players[0] ? 'none' : 'block'
+        }}>
+          <h3> Wait for the host to start the game... </h3>
+        </div>
       </Flex>
+
+
     </div>
   );
 };

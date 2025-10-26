@@ -198,7 +198,7 @@ io.on('connection', async socket => {
     } else if (prevRound === allPlayers.length - 1){
       // if the prevRound is the amount of players (-1), end of the game go to gallery
       io.to(currentGame.gameCode).emit('stageAdvance', 'gallery')
-      return
+      return;
     }
     
     // select curator based on roundCount index on the allPlayers array
@@ -243,7 +243,8 @@ io.on('connection', async socket => {
       },
       players: allPlayers,
       doneCount: 0,
-      playerArtworks: []
+      playerArtworks: [],
+      lastRound: false
     }
 
     // player emit - targets game room except curator
@@ -259,26 +260,6 @@ io.on('connection', async socket => {
 
   } // end of advance round func
 
-
-  // _______________________________________________________________________________
-  // ADVANCING A STAGE
-  // nextStage updates the stage on the game context
-
-  async function advanceStage(stage) {
-    console.log('next stage event triggered!')
-    /* 
-    check stage of current round (get round from db)
-      if reference, set to painting
-      if painting, set to judging
-        - determine ribbons
-      if judging, create new round (with advanceRound)
-        - determine winners
-        - 
-      POTENTIAL ISSUES;
-        multiple emits occur, causing stages to advance before user input
-          fix: only one client can emit the event, button disabled after one click
-    */
-  }
 
   // _______________________________________________________________________________
   // TO JUDGING
@@ -301,7 +282,13 @@ io.on('connection', async socket => {
 
     // call advanceStage stage function 
     // update stage of the room from painting -> judging
-    io.to(currentGame.gameCode).emit('stageAdvance', 'judging')
+    io.to(currentGame.gameCode).emit('stageAdvance', 'judging');
+
+    // if it's the last round, emit last round event
+    if (roundCount === allPlayers.length - 1){
+      // emit to the client that it's the last round
+      io.to(currentGame.gameCode).emit('lastRound');
+    }
 
   })
 

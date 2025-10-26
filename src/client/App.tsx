@@ -82,7 +82,8 @@ const App: React.FC = () => {
       title: null,
       src: null,
     },
-    playerArtworks: []
+    playerArtworks: [],
+    lastRound: false,
   });
 
   // socket connection state
@@ -178,6 +179,11 @@ const App: React.FC = () => {
       setGame((oldGame) => ({...oldGame, doneCount: doneCount}))
     }
 
+    function lastRound() {
+      // change lastRound to true
+      setGame((oldGame) => ({...oldGame, lastRound: true}))
+    }
+
     // SOCKET ON
     newSocket.on("connect", onConnect);
     newSocket.on("referenceSelected", referenceSelected);
@@ -186,6 +192,7 @@ const App: React.FC = () => {
     newSocket.on("stageAdvance", stageAdvance);
     newSocket.on("artworkContext", artworkContext);
     newSocket.on("submit", submit);
+    newSocket.on("lastRound", lastRound);
 
     // SOCKET OFF
     return () => {
@@ -196,6 +203,7 @@ const App: React.FC = () => {
       newSocket.off("stageAdvance", stageAdvance);
       newSocket.off("artworkContext", artworkContext);
       newSocket.off("submit", submit);
+      newSocket.off("lastRound", lastRound);
 
       setUserSocketId(null);
     };

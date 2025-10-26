@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useGameContext, useSocketContext } from '../context';
 import axios from 'axios';
 
-import { Button } from '../antdComponents';
+import { Button, Tooltip, Spin, Flex } from '../antdComponents';
 
 // ---------------------[TYPES]---------------------
 
@@ -20,9 +20,11 @@ const LockInJudging = () => {
 
   const [lockInReady, setLockInReady] = useState(false);
 
+  const [ spinnerVisible, setSpinnerVisible ] = useState(false);
+
   const { socket } = useSocketContext();
 
-  const { ribbons, playerArtworks, role } = useGameContext().game;
+  const { ribbons, playerArtworks, role, lastRound } = useGameContext().game;
 
   // -------------------[HANDLERS]--------------------
 
@@ -46,7 +48,26 @@ const LockInJudging = () => {
 
   // trigger the next round
   const triggerNextRound = () => {
-    socket?.emit('newRound')
+    // if it's the last round, wait to emit to the socket
+    if (lastRound){
+      setTimeout(() => {
+        socket.emit('newRound')
+      }, 2000)
+
+    } else {
+      socket?.emit('newRound')
+    }
+
+  }
+
+  // on click, submit points and then trigger the next round
+  const handleClick = () => {
+    handleLockIn();
+    triggerNextRound();
+
+    if(lastRound) {
+      setSpinnerVisible(true)
+    }
   }
 
   // -------------------[LIFECYCLE]-------------------
@@ -88,13 +109,46 @@ const LockInJudging = () => {
     return null
   }
 
+  if (lastRound){
+    return (
+      <Flex vertical>
+        <Spin size="large" style={{display: spinnerVisible ? 'block' : 'none'}} />
+
+        <div style={{display: spinnerVisible ? 'none' : 'block'}}>
+          <Tooltip title="Move to Gallery">
+            <Button
+              onClick={handleClick}
+              variant="solid"
+              color="primary"
+              style={{
+                backgroundColor: "var(--nav)",
+                borderRadius: 8,
+                paddingBlock: 20,
+                paddingInline: 30,
+              }}
+            >
+              <h3>Lock In Ribbons</h3>
+            </Button>
+          </Tooltip>
+        </div>
+
+      </Flex>
+    )
+  }
+
   return (
     <Button
-      onClick={() => {
-      triggerNextRound();
-      handleLockIn();
-    }}>
-      Lock In Ribbons
+      onClick={handleClick}
+      variant="solid"
+      color="primary"
+      style={{
+        backgroundColor: "var(--nav)",
+        borderRadius: 8,
+        paddingBlock: 20,
+        paddingInline: 30,
+      }}
+    >
+      <h3>Lock In Ribbons</h3>
     </Button>
   )
 

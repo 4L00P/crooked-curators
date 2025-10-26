@@ -4,6 +4,9 @@ import React from "react";
 import { Image, Card } from "../antdComponents";
 import { useGameContext } from "../context";
 
+import Mona_Loser_Pick from "../../assets/images/Mona_Loser_Pick.png";
+import Mona_Loser_Wait from "../../assets/images/Mona_Loser_Wait.png";
+
 type props = {
   title: string;
   image: string;
@@ -15,14 +18,12 @@ const Reference = (props) => {
   let { title, image, description } = props;
   if (!title) {
     title = game.role === 'curator' ? "No Reference Selected" : "Waiting for Curator to Select Reference...";
-    image =
-      "https://www.farmersalmanac.com/wp-content/uploads/2020/11/Starry-Night-Van-Gogh-Which-Stars-GoogleArtProject-1536x817.jpg";
-    description = "Weird Al!";
+    image = game.role === 'curator' ? Mona_Loser_Pick : Mona_Loser_Wait;
   }
   title = game?.reference?.title ?? title;
   image = game?.reference?.src ?? image;
   return (
-    <Card title={title} >
+    <Card title={title} style={{textAlign:'center'}}>
       <Image src={image} style={{maxHeight: "40vh"}}/>
     </Card>
   );

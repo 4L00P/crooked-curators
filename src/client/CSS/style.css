@@ -91,3 +91,10 @@ body {
 .ant-btn-default:disabled {
   color: var(--background);
 }
+
+.ant-input-search-button {
+  border-radius: 8px;
+  color: var(--content);
+  background-color: var(--nav);
+}
+

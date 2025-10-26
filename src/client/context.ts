@@ -58,6 +58,7 @@ export interface Game {
   doneCount: number;
   reference: Reference | { title: null; src: null;}
   playerArtworks: ArtworkType[];
+  lastRound: boolean;
 }
 
 export interface GameContextType {

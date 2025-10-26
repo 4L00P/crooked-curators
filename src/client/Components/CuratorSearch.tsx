@@ -1,7 +1,7 @@
 // Contains the Reference and ReferenceSearch components
 
 import React, { useState, useContext } from "react";
-import { Divider, Flex, Button, Popconfirm, Row, Col } from "../antdComponents";
+import { Flex, Button, Popconfirm, ReloadOutlined } from "../antdComponents";
 
 import ReferenceSearch from "./ReferenceSearch";
 import Reference from "./Reference";
@@ -46,76 +46,57 @@ const CuratorSearch = () => {
 
         <div>
         <ReferenceSearch handleSearch={handleSearch} disabled={results.length}/>
-        <p>{(results.length > 0 && results.length < 4) ? `That search didn't get enough results, you can try again` : `Choose a Reference!`}</p>
+        <h4>{results.length > 0 && results.length < 4 ? `That search didn't get enough results, you can try again` : ``}</h4>
         </div>
         <ArtSubmitCount />
 
 
         <Reference {...results[selected]} />
-        <Button onClick={nextResult} disabled={selected >= results.length - 1}>
-          {results.length === 0
-            ? "Search For Some Inspiration!"
-            : `Result ${selected + 1} out of ${results.length}`}
-        </Button>
-        <Popconfirm
-          title="Are you sure to select this reference?"
-          onConfirm={selectReference}
-          onCancel={() => {}}
-          okText="Yes"
-          cancelText="No"
-        >
-        <Button disabled={confirmed || results.length === 0}>{confirmed ? `Reference Selected!` : `Choose this Piece`}</Button>
-        </Popconfirm>
+
+        <Flex style={{gap: 20}}>
+          <Button
+            disabled={selected >= results.length - 1}
+            onClick={nextResult}
+            variant="solid"
+            color="primary"
+            icon={<ReloadOutlined style={{fontSize: 20}}/>}
+            iconPosition="end"
+            style={{
+              backgroundColor: "var(--nav)",
+              borderRadius: 8,
+              paddingBlock: 20,
+              paddingInline: 17,
+            }}
+          >
+            {results.length === 0
+              ? ''
+              : <h4> Result {selected + 1} out of {results.length} </h4>}
+          </Button>
+          <Popconfirm
+            title="Are you sure to select this reference?"
+            onConfirm={selectReference}
+            onCancel={() => {}}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button
+              disabled={confirmed || results.length === 0}
+              variant="solid"
+              color="primary"
+              style={{
+                backgroundColor: "var(--nav)",
+                borderRadius: 8,
+                paddingBlock: 20,
+                paddingInline: 30,
+              }}
+            >
+              {confirmed ? <h3>Reference Selected!</h3> : <h3>Choose this Piece</h3>}
+            </Button>
+          </Popconfirm>
+        </Flex>
 
     </Flex>
   );
-  // return (
-  //   <>
-  //     <Row gutter={2}>
-  //       <Col span={18}>
-  //         <Flex gap="middle" align="center" vertical>
-  //           <Flex style={{ width: 500 }} justify="space-evenly" align="center">
-  //             <ReferenceSearch
-  //               handleSearch={handleSearch}
-  //               disabled={results.length}
-  //             />
-  //             <p>
-  //               {results.length > 0 && results.length < 4
-  //                 ? `That search didn't get enough results, you can try again`
-  //                 : `Choose a Reference!`}
-  //             </p>
-  //           </Flex>
-  //         </Flex>
-  //         <Divider>
-  //           <Reference {...results[selected]} />
-  //           <Button
-  //             onClick={nextResult}
-  //             disabled={selected >= results.length - 1}
-  //           >
-  //             {results.length === 0
-  //               ? "Search For Some Inspiration!"
-  //               : `Result ${selected + 1} out of ${results.length}`}
-  //           </Button>
-  //           <Popconfirm
-  //             title="Are you sure to select this reference?"
-  //             onConfirm={selectReference}
-  //             onCancel={() => {}}
-  //             okText="Yes"
-  //             cancelText="No"
-  //           >
-  //             <Button disabled={confirmed || results.length === 0}>
-  //               {confirmed ? `Reference Selected!` : `Choose this Piece`}
-  //             </Button>
-  //           </Popconfirm>
-  //         </Divider>
-  //       </Col>
-
-  //       <Col span={3}>
-  //         <ArtSubmitCount />
-  //       </Col>
-  //     </Row>
-  //   </>
-  // );
 };
 
 export default CuratorSearch;

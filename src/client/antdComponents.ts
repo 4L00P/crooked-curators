@@ -56,6 +56,10 @@ import Collapse from 'antd/es/collapse'
 // Gallery
 import { Carousel } from 'antd/es/index';
 
+
+// Lock In Judging
+import Spin from 'antd/es/spin';
+
 export {
     Divider, Col, Row, Flex, FlexProps, Segmented,
     generate, green, presetPalettes, red,
@@ -64,5 +68,5 @@ export {
     ConfigProvider, Button, ReloadOutlined, Space,
     GetProps, Image, Input, Search,
     Card, Splitter, Typography, Collapse,
-    Carousel, Tooltip, Timeline, Popconfirm
+    Carousel, Tooltip, Timeline, Popconfirm, Spin
 }

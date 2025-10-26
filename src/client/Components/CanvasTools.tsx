@@ -10,6 +10,8 @@ import { Col, Row, Button, Tooltip } from '../antdComponents';
 import { IoArrowUndoSharp, IoArrowRedoSharp } from "react-icons/io5";
 import { FaPenNib, FaEraser, FaRegSave, FaDownload } from 'react-icons/fa';
 
+import { Keybindy } from '@keybindy/react';
+
 // COMPONENTS
 import CanvasColorPicker from './ColorPicker';
 
@@ -57,7 +59,7 @@ const CanvasTools: React.FC = (props: propsTypes) => {
   return(
     <Col>
       <Row>
-        <Tooltip title="Undo">
+        <Tooltip title="Undo (Cntrl + Z)">
           <Button onClick={handleUndo}>
             <IoArrowUndoSharp />
           </Button>
@@ -65,7 +67,7 @@ const CanvasTools: React.FC = (props: propsTypes) => {
       </Row>
       <p />
       <Row>
-        <Tooltip title="Redo">
+        <Tooltip title="Redo (Ctrl + Shift + Z)">
           <Button onClick={handleRedo}>
             <IoArrowRedoSharp />
           </Button>
@@ -95,6 +97,25 @@ const CanvasTools: React.FC = (props: propsTypes) => {
           </Button>
         </Tooltip>
       </Row>
+      <Keybindy
+        scope="global"
+        shortcuts={[
+          {
+            keys: ['B'],
+            handler: () => handlePen(),
+            options: {
+              preventDefault: true,
+            },
+          },
+          {
+            keys: ['E'],
+            handler: () => handleEraser(),
+            options: {
+              preventDefault: true,
+            },
+          }
+        ]}
+      />
     </Col>
   )
 }

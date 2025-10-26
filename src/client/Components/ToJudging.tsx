@@ -17,7 +17,6 @@ const ToJudging = () => {
   return (
     <Button
       onClick={handleClick}
-      disabled={doneCount !== players.length - 1}
       variant="solid"
       color="primary"
       style={{

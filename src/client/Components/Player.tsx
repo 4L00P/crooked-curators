@@ -17,7 +17,11 @@ const Player = ({ player }: any) => {
     axios.get(`/artworks/points/${player.id}/${code}`)
       .then(({ data }) => {
         // set state with player's points
+        console.log('Successfully got ribbon points CLIENT')
         setPoints(data);
+      })
+      .catch((err) => {
+        console.log('Could not retrieve ribbon points CLIENT')
       })
   }
 
