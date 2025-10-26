@@ -216,7 +216,8 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
                 },
                 players: allPlayers,
                 doneCount: 0,
-                playerArtworks: []
+                playerArtworks: [],
+                lastRound: false
             };
             // player emit - targets game room except curator
             // pass in roundState
@@ -228,26 +229,6 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
             exports.io.to(curator.socketId).emit('newRound', roundState);
         });
     } // end of advance round func
-    // _______________________________________________________________________________
-    // ADVANCING A STAGE
-    // nextStage updates the stage on the game context
-    function advanceStage(stage) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log('next stage event triggered!');
-            /*
-            check stage of current round (get round from db)
-              if reference, set to painting
-              if painting, set to judging
-                - determine ribbons
-              if judging, create new round (with advanceRound)
-                - determine winners
-                -
-              POTENTIAL ISSUES;
-                multiple emits occur, causing stages to advance before user input
-                  fix: only one client can emit the event, button disabled after one click
-            */
-        });
-    }
     // _______________________________________________________________________________
     // TO JUDGING
     // emitted from client when judge hits 'To Judging!' button
@@ -269,6 +250,11 @@ exports.io.on('connection', (socket) => __awaiter(void 0, void 0, void 0, functi
         // call advanceStage stage function 
         // update stage of the room from painting -> judging
         exports.io.to(currentGame.gameCode).emit('stageAdvance', 'judging');
+        // if it's the last round, emit last round event
+        if (roundCount === allPlayers.length - 1) {
+            // emit to the client that it's the last round
+            exports.io.to(currentGame.gameCode).emit('lastRound');
+        }
     }));
     // _______________________________________________________________________________
     // TO LOBBY
