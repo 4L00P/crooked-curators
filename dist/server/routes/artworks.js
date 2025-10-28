@@ -190,7 +190,7 @@ exports.artworkRouter.get('/points/:user_id/:gameCode', ({ params }, res) => {
                 return dataValues.ribbon_id !== null;
             });
             // reduce over filtered artworks
-            const artworksWithRibbons = yield artworksThatHaveRibbons.reduce((acc_1, _a) => __awaiter(void 0, [acc_1, _a], void 0, function* (acc, { dataValues }) {
+            const artworksWithRibbons = yield artworksThatHaveRibbons.map((_a) => __awaiter(void 0, [_a], void 0, function* ({ dataValues }) {
                 const obj = {
                     artwork: dataValues,
                     ribbon: {}
@@ -207,17 +207,17 @@ exports.artworkRouter.get('/points/:user_id/:gameCode', ({ params }, res) => {
                     .catch((err) => {
                     console.error('Failed to get A Ribbon for an Artwork: SERVER:', err);
                 });
-                acc.push(obj);
-                return acc;
+                return obj;
             }), []);
             // promise all to ensure that the values resolve
             yield Promise.all(artworksWithRibbons)
+                .then((values) => {
+                values.forEach((artwork) => {
+                    const { points } = artwork.ribbon;
+                    playerPoints += points;
+                });
+            })
                 .catch((err) => console.error('Failed to PROMISE ALL artworks with their ribbon requests: SERVER:', err));
-            // add points to player points total
-            artworksWithRibbons.forEach((artwork) => {
-                const { points } = artwork.ribbon;
-                playerPoints += points;
-            });
             // send back points in response
             res.status(200).json(playerPoints);
         }));
@@ -228,7 +228,7 @@ exports.artworkRouter.get('/points/:user_id/:gameCode', ({ params }, res) => {
 });
 // ---------------[PATCH ARTWORK]----------------
 // updates artwork when awarded a ribbon from judging
-exports.artworkRouter.patch('/ribbons', ({ body }, res) => {
+exports.artworkRouter.patch('/ribbons', (_a, res_1) => __awaiter(void 0, [_a, res_1], void 0, function* ({ body }, res) {
     // pull artworks and ribbons from the body of the req
     const { artworks, ribbons } = body;
     // filter through ribbons to separate each ribbon for easier access
@@ -258,7 +258,7 @@ exports.artworkRouter.patch('/ribbons', ({ body }, res) => {
         return acc;
     }, []);
     // update db with artwork and ribbon
-    artworksRibbons.forEach((artworkRibbon) => {
+    yield artworksRibbons.forEach((artworkRibbon) => {
         artworks_1.Artwork.update({
             ribbon_id: artworkRibbon.ribbonId
         }, {
@@ -268,12 +268,13 @@ exports.artworkRouter.patch('/ribbons', ({ body }, res) => {
         })
             .then(() => {
             console.log('Successful PATCH for Artwork with Ribbon awarded.');
-            res.sendStatus(201);
         })
             .catch((err) => {
             res.send(500);
             console.error('Failed to PATCH Artwork with Ribbon awarded: SERVER:', err);
+            res.sendStatus(500);
         });
     });
-});
+    res.sendStatus(201);
+}));
 //# sourceMappingURL=artworks.js.map
