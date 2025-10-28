@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.artworkRouter = void 0;
 const express_1 = require("express");
 const axios_1 = __importDefault(require("axios"));
+const body_parser_1 = __importDefault(require("body-parser"));
 // -------------------[SCHEMAS]------------------
 const games_1 = require("../db/schemas/games");
 const rounds_1 = require("../db/schemas/rounds");
@@ -22,6 +23,9 @@ const artworks_1 = require("../db/schemas/artworks");
 const ribbons_1 = require("../db/schemas/ribbons");
 // -------------------[ROUTER]-------------------
 exports.artworkRouter = (0, express_1.Router)();
+// -------------[ROUTER MIDDLEWARE]---------------
+exports.artworkRouter.use(body_parser_1.default.json({ limit: '300mb', strict: false }));
+exports.artworkRouter.use(body_parser_1.default.urlencoded({ extended: true, limit: '300mb', parameterLimit: 5000 }));
 // ----------------[POST ARTWORK]----------------
 // post artworks to database by s3 get url
 exports.artworkRouter.post('/', ({ body, user }, res) => {

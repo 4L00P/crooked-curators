@@ -44,9 +44,8 @@ app.use(passport_1.default.session());
 const CLIENT = DEBUG_MODE === "true" ? path.resolve(__dirname, '../../dist/client') : path.resolve(__dirname, '../client');
 const HTML = path.resolve(CLIENT, './index.html');
 // parsing
-app.use(bodyParser.json());
-app.use('/artworks', bodyParser.json({ limit: '300mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '300mb' }));
+app.use(bodyParser.json({ limit: '5mb', strict: false }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb', parameterLimit: 5000 }));
 //----------SET ROUTES-------------
 app.use('/auth/google', routes_1.authRouter);
 app.use('/name-randomizer', routes_1.nameRandomizerRouter);
