@@ -62,8 +62,8 @@ const HTML = path.resolve(CLIENT, './index.html');
 
 // parsing
 app.use(bodyParser.json());
-app.use('/artworks', bodyParser.json({limit: '100mb'}))
-app.use(bodyParser.urlencoded({ extended: true, limit: '100mb'}))
+app.use('/artworks', bodyParser.json({limit: '300mb'}))
+app.use(bodyParser.urlencoded({ extended: true, limit: '300mb'}))
 
 //----------SET ROUTES-------------
 
