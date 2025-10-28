@@ -22,6 +22,7 @@ const ReferenceSearch = ({ handleSearch, disabled }) => {
         onSearch={(...args)=>{
           handleSearch(onSearch(...args))
         }}
+        disabled={disabled}
         style={{
           marginTop: 20
         }}

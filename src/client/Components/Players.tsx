@@ -16,7 +16,7 @@ const Players = () => {
   // --------------------[RENDER]---------------------
 
   return (
-    <Card>
+    <Card style={{textAlign:"center", marginBottom:30}}>
       {players.map((player) => {
         return (
           <Player player={player} key={player.username}/>

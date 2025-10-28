@@ -24,9 +24,8 @@ import { Artwork as ArtworkTypes, Ribbon as RibbonTypes } from './types';
 
 const ribbonsStyle: React.CSSProperties = {
   width: '100%',
-  //height: 550,
   height: '100%',
-  borderRadius: 6,
+  marginTop: 10
 };
 
 // --------------------[STATUS]---------------------
@@ -92,7 +91,7 @@ const RoundJudging: React.FC = () => {
       <br />
       <DndContext onDragEnd={handleDragEnd}>
         <Flex gap="middle" align="center" vertical>
-          <Flex style={ribbonsStyle} justify='space-evenly' align='center'>
+          <Flex style={ribbonsStyle} justify='space-evenly' align='center' gap="middle" wrap={true}>
             {ribbons.map((ribbon) => {
               return (
                 <Ribbon

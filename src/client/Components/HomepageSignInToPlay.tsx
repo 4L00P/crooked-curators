@@ -11,11 +11,13 @@ import SignInButton2 from "./SignInButton2";
 const joinCreateStyle: React.CSSProperties = {
   width: "100%",
   height: 350,
+  marginTop:30
 };
 
 const buttonStyle: React.CSSProperties = {
   width: '100%',
-  height: 50
+  height: 50,
+  marginTop:10
 }
 
 const HomepageSignInToPlay = () => {
@@ -30,7 +32,7 @@ const HomepageSignInToPlay = () => {
 
   return (
     
-      <Flex style={joinCreateStyle} justify="center" align="center">
+      <Flex style={joinCreateStyle} justify="center" align="flex-start">
         <Col>
 
     

@@ -17,10 +17,7 @@ import { Ribbon as RibbonType, Artwork as ArtworkTypes} from './types'
 
 const ribbonsStyle: React.CSSProperties = {
   width: 450,
-  height: 400,
-  // height: '100%',
-  borderRadius: 6,
-  border: '3px solid #3B262C',
+  height: 350,
 };
 
 type RibbonProps = {
@@ -42,8 +39,8 @@ export function Ribbon({ribbon, artworks}: RibbonProps) {
   return (
     <>
     <div ref={setNodeRef}>
-      <Flex gap="middle" align="center" vertical>
-        <Flex style={ribbonsStyle} justify='space-evenly' align='flex-start'>
+      <Flex gap="middle" align="center" style={{marginTop: 40}} vertical>
+        <Flex style={ribbonsStyle} justify='space-between' align='flex-start'>
           <Col>
             <Row>
               <img src={ribbon.source} style={{ width: 100 }}/>

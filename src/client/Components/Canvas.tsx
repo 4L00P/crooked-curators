@@ -274,97 +274,103 @@ const Canvas = () => {
         <ArtSubmitCount />
       </Divider>
       {/* <Flex gap="middle" align="center" vertical> */}
-      <Flex justify="space-evenly" align="center">
-        <Col>
-          <CanvasTools
-            tool={tool}
-            setTool={setTool}
-            handleUndo={handleUndo}
-            handleRedo={handleRedo}
-          />
-          <br />
-          <div
-            style={{
-              display: "inline-block",
-              height: 200,
-              // marginInlineStart: 70,
-            }}
-          >
-            <Slider
-              vertical
-              min={1}
-              max={100}
-              defaultValue={5}
-              onChange={handleBrushSize}
+      <Flex justify="center" align="center">
+        <Row gutter={16} align="middle">
+          <Col>
+            <CanvasTools
+              tool={tool}
+              setTool={setTool}
+              handleUndo={handleUndo}
+              handleRedo={handleRedo}
             />
-          </div>
-        </Col>
-        <Col>
-          <div ref={containerRef} style={canvasBoxStyle}>
-            <Stage
-              width={900}
-              height={500}
-              ref={stageRef}
-              onMouseDown={handleMouseDown}
-              onMousemove={handleMouseMove}
-              onMouseup={handleMouseUp}
-              onTouchStart={handleMouseDown}
-              onTouchMove={handleMouseMove}
-              onTouchEnd={handleMouseUp}
+            <br />
+            <div
+              style={{
+                display: "inline-block",
+                height: 200,
+                // marginInlineStart: 70,
+              }}
             >
-              <Layer>
-                <Rect x={0} y={0} width={900} height={500} fill="white" />
-              </Layer>
-              <Layer>
-                {lines.map((line, i) => (
-                  <Line
-                    key={i}
-                    points={line.points}
-                    stroke={line.stroke}
-                    strokeWidth={line.strokeWidth}
-                    tension={0.5}
-                    lineCap="round"
-                    lineJoin="round"
-                    globalCompositeOperation={
-                      line.tool === "eraser" ? "destination-out" : "source-over"
-                    }
-                  />
-                ))}
-              </Layer>
-            </Stage>
-          </div>
-        </Col>
-        <Col>
-          <Row>
-            <Tooltip title="Save to profile">
-              <Button onClick={handleSaveToProfile} disabled>
-                <FaRegSave />
-              </Button>
-            </Tooltip>
-          </Row>
-          <p />
-          <Row>
-            <Tooltip title="Download">
-              <Button onClick={handleDownload}>
-                <FaDownload />
-              </Button>
-            </Tooltip>
-          </Row>
-          <br />
-          <br />
-          <br />
-          <br />
-          <Row>
-            <CanvasColorPicker changeColor={setLineColor} />
-          </Row>
-          <br />
-          <br />
-          <br />
-          <br />
-          <Row>
-            <SubmitArtwork handleSubmitImage={handleSubmitImage} />
-          </Row>
-        </Col>
+              <Slider
+                vertical
+                min={1}
+                max={100}
+                defaultValue={5}
+                onChange={handleBrushSize}
+              />
+            </div>
+          </Col>
+          <Col>
+            <div ref={containerRef} style={canvasBoxStyle}>
+              <Stage
+                width={900}
+                height={500}
+                ref={stageRef}
+                onMouseDown={handleMouseDown}
+                onMousemove={handleMouseMove}
+                onMouseup={handleMouseUp}
+                onTouchStart={handleMouseDown}
+                onTouchMove={handleMouseMove}
+                onTouchEnd={handleMouseUp}
+              >
+                <Layer>
+                  <Rect x={0} y={0} width={900} height={500} fill="white" />
+                </Layer>
+                <Layer>
+                  {lines.map((line, i) => (
+                    <Line
+                      key={i}
+                      points={line.points}
+                      stroke={line.stroke}
+                      strokeWidth={line.strokeWidth}
+                      tension={0.5}
+                      lineCap="round"
+                      lineJoin="round"
+                      globalCompositeOperation={
+                        line.tool === "eraser" ? "destination-out" : "source-over"
+                      }
+                    />
+                  ))}
+                </Layer>
+              </Stage>
+            </div>
+          </Col>
+          <Col>
+            {/* <Row>
+              <Tooltip title="Save to profile">
+                <Button onClick={handleSaveToProfile} disabled>
+                  <FaRegSave />
+                </Button>
+              </Tooltip>
+            </Row>
+            <p /> */}
+            <Row>
+              <Tooltip title="Download">
+                <Button onClick={handleDownload}>
+                  <FaDownload />
+                </Button>
+              </Tooltip>
+            </Row>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <Row>
+              <CanvasColorPicker changeColor={setLineColor} />
+            </Row>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <Row>
+              <SubmitArtwork handleSubmitImage={handleSubmitImage} />
+            </Row>
+          </Col>
+        </Row>
       </Flex>
       {/* </Flex> */}
     </div>

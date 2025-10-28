@@ -28,7 +28,7 @@ const GameCodeJoin = ({username}) => {
   }
 
   return (
-    <div>
+    <div style={{marginBottom: 30}}>
       <h3>Enter Game Code to Join a Room</h3>
       <p />
       <Space.Compact style={{ width: "100%" }}>

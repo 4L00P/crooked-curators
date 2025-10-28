@@ -69,8 +69,10 @@ const Gallery: React.FC = ({ artwork, size }: ArtworkCardProps) => {
           <Col>
             <Row justify="space-evenly" gutter={16}>
               <Col>
-                <h2>Ribbon Winners:</h2>
-                <Players />
+                <Flex justify="center" vertical>
+                  <h2 style={{textAlign:"center"}}>Ribbon Winners:</h2>
+                  <Players />
+                </Flex>
               </Col>
               <Col>
                 <Carousel

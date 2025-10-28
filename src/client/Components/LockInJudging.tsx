@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useGameContext, useSocketContext } from '../context';
 import axios from 'axios';
 
-import { Button, Tooltip, Spin, Flex } from '../antdComponents';
+import { Button, Tooltip, Spin, Flex, Row } from '../antdComponents';
 
 // ---------------------[TYPES]---------------------
 
@@ -111,45 +111,57 @@ const LockInJudging = () => {
 
   if (lastRound){
     return (
-      <Flex vertical>
-        <Spin size="large" style={{display: spinnerVisible ? 'block' : 'none'}} />
-
-        <div style={{display: spinnerVisible ? 'none' : 'block'}}>
-          <Tooltip title="Move to Gallery">
-            <Button
-              onClick={handleClick}
-              variant="solid"
-              color="primary"
-              style={{
-                backgroundColor: "var(--nav)",
-                borderRadius: 8,
-                paddingBlock: 20,
-                paddingInline: 30,
-              }}
-            >
-              <h3>Lock In Ribbons</h3>
-            </Button>
-          </Tooltip>
-        </div>
-
+      <Flex justify="center" gap="middle" vertical>
+        <Row justify="center">
+          <h3>Drag the artwork under the ribbon you want to award</h3>
+        </Row>
+        <Row justify="center">
+          <Spin size="large" style={{display: spinnerVisible ? 'block' : 'none'}} />
+        </Row>
+        <Row justify="center">
+          <div style={{display: spinnerVisible ? 'none' : 'block'}}>
+            <Tooltip title="Move to Gallery">
+              <Button
+                onClick={handleClick}
+                variant="solid"
+                color="primary"
+                style={{
+                  backgroundColor: "var(--nav)",
+                  borderRadius: 8,
+                  paddingBlock: 20,
+                  paddingInline: 30,
+                }}
+              >
+                <h3>Lock In Ribbons</h3>
+              </Button>
+            </Tooltip>
+          </div>
+        </Row>
       </Flex>
     )
   }
 
   return (
-    <Button
-      onClick={handleClick}
-      variant="solid"
-      color="primary"
-      style={{
-        backgroundColor: "var(--nav)",
-        borderRadius: 8,
-        paddingBlock: 20,
-        paddingInline: 30,
-      }}
-    >
-      <h3>Lock In Ribbons</h3>
-    </Button>
+    <Flex justify="center" gap="middle" vertical>
+      <Row justify="center">
+        <h3>Drag the artwork under the ribbon you want to award</h3>
+      </Row>
+      <Row justify="center">
+        <Button
+          onClick={handleClick}
+          variant="solid"
+          color="primary"
+          style={{
+            backgroundColor: "var(--nav)",
+            borderRadius: 8,
+            paddingBlock: 20,
+            paddingInline: 30,
+          }}
+        >
+          <h3>Lock In Ribbons</h3>
+        </Button>
+      </Row>
+    </Flex>
   )
 
   // if(lockInReady === true){
