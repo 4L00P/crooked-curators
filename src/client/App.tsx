@@ -227,7 +227,6 @@ const App: React.FC = () => {
                 color: "var(--darkerbrown)",
               }}
             >
-              <br />
               <div
                 style={{
                   background: colorBgContainer,

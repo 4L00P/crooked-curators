@@ -22,6 +22,7 @@ module.exports = {
       {
       template: "./src/client/index.html",
       filename: "index.html",
+      favicon: "./favicon.png"
      }
     ),
     // ...analyzerPlugin,

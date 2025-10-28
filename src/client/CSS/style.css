@@ -6,6 +6,7 @@
     --grey: #8f8f8f;
     --yellow: #EDDB98;
     --lightmauve: #e0b5c2;
+    --grey: rgb(196, 185, 177);
     --maroon: #800933;
     --darkbrown: #3b2b30;
 
@@ -70,6 +71,8 @@ body {
 .new-nav li:hover {
   background-color: var(--accent);
 }
+
+
 
 .site-layout-content {
   min-height: 280px;
