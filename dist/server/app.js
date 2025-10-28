@@ -45,6 +45,8 @@ const CLIENT = DEBUG_MODE === "true" ? path.resolve(__dirname, '../../dist/clien
 const HTML = path.resolve(CLIENT, './index.html');
 // parsing
 app.use(bodyParser.json());
+app.use('/artworks', bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 //----------SET ROUTES-------------
 app.use('/auth/google', routes_1.authRouter);
 app.use('/name-randomizer', routes_1.nameRandomizerRouter);
