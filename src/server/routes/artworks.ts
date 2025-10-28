@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import axios from 'axios';
+import bodyParser from 'body-parser';
 
 // -------------------[SCHEMAS]------------------
 
@@ -11,6 +12,11 @@ import { Ribbon } from '../db/schemas/ribbons';
 // -------------------[ROUTER]-------------------
 
 export const artworkRouter = Router();
+
+// -------------[ROUTER MIDDLEWARE]---------------
+
+artworkRouter.use(bodyParser.json({limit: '300mb', strict: false}))
+artworkRouter.use(bodyParser.urlencoded({ extended: true, limit: '300mb', parameterLimit: 5000}))
 
 // ----------------[POST ARTWORK]----------------
 

@@ -1,7 +1,7 @@
 // At the end of a round, all artworks are displayed here for judging
 
 import React, { useEffect } from 'react';
-import { useGameContext, useSocketContext } from '../context';
+import { useGameContext, useSocketContext, useUserContext } from '../context';
 
 import {
   Divider,
@@ -19,6 +19,7 @@ import LockInJudging from './LockInJudging';
 // ---------------------[TYPES]---------------------
 
 import { Artwork as ArtworkTypes, Ribbon as RibbonTypes } from './types';
+import { cursorTo } from 'readline';
 
 // ---------------------[STYLE]---------------------
 
@@ -47,6 +48,8 @@ const RoundJudging: React.FC = () => {
 
   const { ribbons, playerArtworks } = useGameContext().game;
   const { socket } = useSocketContext();
+  const { user } = useUserContext();
+  const { game } = useGameContext();
  
   
   // -------------------[HANDLERS]--------------------
@@ -84,6 +87,7 @@ const RoundJudging: React.FC = () => {
   return (
     <>
       <Flex gap="middle" align="center" vertical>
+        <h3>{user.username === game.curator.username ? `You are judging` : `${game.curator.username} is judging`}</h3>
         <Flex style={ribbonsStyle} justify='space-evenly' align='center'>
           <LockInJudging />
         </Flex>
