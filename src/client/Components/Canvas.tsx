@@ -250,7 +250,7 @@ const Canvas = () => {
   // --------------------[RENDER]---------------------
 
   return (
-    <div>
+    <div style={{marginBottom: 30}}>
       <Keybindy
         scope="global"
         shortcuts={[
@@ -344,13 +344,16 @@ const Canvas = () => {
               </Tooltip>
             </Row>
             <p /> */}
-            <Row>
+            <Row align="top">
               <Tooltip title="Download">
                 <Button onClick={handleDownload}>
                   <FaDownload />
                 </Button>
               </Tooltip>
             </Row>
+            <br />
+            <br />
+            <br />
             <br />
             <br />
             <br />
@@ -366,8 +369,13 @@ const Canvas = () => {
             <br />
             <br />
             <br />
+            <br />
+            <br />
             <Row>
-              <SubmitArtwork handleSubmitImage={handleSubmitImage} />
+              <Flex vertical>
+                <h4>SUBMIT</h4>
+                <SubmitArtwork handleSubmitImage={handleSubmitImage} />
+              </Flex>
             </Row>
           </Col>
         </Row>

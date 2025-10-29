@@ -9,7 +9,7 @@ const randomizerStyle: React.CSSProperties = {
   width: '100%',
   height: 75,
   borderRadius: 6,
-  marginTop: 30
+  marginTop: 10,
 };
 
 const HomepageName = ({ randomName, handleRandomizeName }) => {
@@ -36,23 +36,39 @@ const HomepageName = ({ randomName, handleRandomizeName }) => {
         </Row>
 
         <Row>
-          <Card
-            style={{ width: 250, height: 50, textAlign: "center" }}
-            size="small"
-          >
-            <h2
+          <Flex align="center">
+            <Card
               style={{
-                fontSize: "15px",
-                marginTop: "1px",
+                width: 250,
+                height: 50,
+                textAlign: "center",
+                borderColor: "var(--content)",
+                backgroundColor: "var(--content)"
+              }}
+              size="small"
+            >
+              <h2
+                style={{
+                  fontSize: "15px",
+                  marginTop: "1px",
+                }}
+              >
+                {randomName}
+              </h2>
+            </Card>
+
+            <Button
+              onClick={handleRandomizeName}
+              style={{
+                height: 45,
+                borderRadius: 8,
+                padding: 7,
+                marginLeft: 10
               }}
             >
-              {randomName}
-            </h2>
-          </Card>
-
-          <Button onClick={handleRandomizeName}>
-            <ReloadOutlined />
-          </Button>
+              <ReloadOutlined style={{ fontSize: 20 }}/>
+            </Button>
+          </Flex>
         </Row>
 
         </Col>

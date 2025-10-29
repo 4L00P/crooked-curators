@@ -16,19 +16,21 @@ app.render(
       theme={{
         components:{
           Carousel:{
-            arrowSize: 64
+            arrowSize: 32
           },
           Button:{
             primaryColor: "var(--content)",
-          }
+          },
+          Timeline:{
+            tailColor: "var(--lightmauve)",
+            // dotBg: "var(--lightmauve)",
+          },
         },
         token: {
-          // Seed Token
-          colorPrimary: "red",
+          colorText: "var(--darkbrown)",
+          colorPrimary: "var(--accent)",
           colorBgLayout: "var(--background)",
           borderRadius: 2,
-
-          // Alias Token
           colorBgContainer: "var(--content)",
         },
       }}

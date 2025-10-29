@@ -6,6 +6,7 @@ import {
   Flex,
   Row,
   Col,
+  Card
 } from '../antdComponents';
 
 import { Timeline } from "antd";
@@ -25,7 +26,7 @@ const HowToPlay = () => {
 
   // --------------------[RENDER]---------------------
   return (
-    <>
+    <Card style={{ marginRight: 25, marginLeft: 15 }}>
       <Flex gap="middle" align="center" vertical>
         <Flex style={boxStyle} justify='space-evenly' align='center'>
           <Col>
@@ -76,7 +77,7 @@ const HowToPlay = () => {
           </Col>
         </Flex>
       </Flex>
-    </>
+    </Card>
   )
 
 }

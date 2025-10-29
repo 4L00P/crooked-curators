@@ -17,6 +17,10 @@ const ActiveGame: React.FC = () => {
   return (
     <>
       <Flex gap="middle" align="center" vertical>
+        <div style={{textAlign:"center", marginBottom: 7}}>
+          <h3>You are the artist!</h3>
+          <h3>Make your best forgery to fool the curator</h3>
+        </div>
         <Flex
           style={{ width: 500 }}
           justify='space-evenly'

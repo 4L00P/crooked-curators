@@ -14,12 +14,6 @@ const joinCreateStyle: React.CSSProperties = {
   marginTop:30
 };
 
-const buttonStyle: React.CSSProperties = {
-  width: '100%',
-  height: 50,
-  marginTop:10
-}
-
 const HomepageSignInToPlay = () => {
 
   // user context
@@ -34,15 +28,11 @@ const HomepageSignInToPlay = () => {
     
       <Flex style={joinCreateStyle} justify="center" align="flex-start">
         <Col>
-
-    
+        
           <Card style={{ width: 300, textAlign: "center" }} >
             <h2> Sign in to Create or Join a Game </h2>
-          </Card>
- 
-          <Flex style={buttonStyle} justify="center" align="center">
             <SignInButton2 />
-          </Flex>
+          </Card>
 
         </Col>
       </Flex>

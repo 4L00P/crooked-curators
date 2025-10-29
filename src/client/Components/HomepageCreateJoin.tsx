@@ -29,7 +29,6 @@ const HomepageCreateJoin = ({randomName}) => {
         <Row>
           <CreateGameButton username={randomName} />
         </Row>
-        <p />
         <Row>
           <GameCodeJoin username={randomName} />
         </Row>

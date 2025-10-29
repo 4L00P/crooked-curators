@@ -31,7 +31,10 @@ const GameSettings = ({roomCode, players}) => {
       </Flex>
 
       <br></br>
-      <JoinedPlayers players={players} />
+      <Card>
+        <JoinedPlayers players={players} />
+
+      </Card>
       <br></br>
 
       <Flex align='right' justify='right'>
@@ -43,8 +46,6 @@ const GameSettings = ({roomCode, players}) => {
             onClick={startGame}
             disabled={!socket || !roomCode}
             style={{
-              backgroundColor: "var(--nav)",
-              borderRadius: 8,
               paddingBlock: 20,
               paddingInline: 30,
             }}

@@ -17,7 +17,7 @@ import { Ribbon as RibbonType, Artwork as ArtworkTypes} from './types'
 
 const ribbonsStyle: React.CSSProperties = {
   width: 450,
-  height: 350,
+  height: 315,
 };
 
 type RibbonProps = {

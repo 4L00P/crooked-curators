@@ -122,12 +122,11 @@ const LockInJudging = () => {
           <div style={{display: spinnerVisible ? 'none' : 'block'}}>
             <Tooltip title="Move to Gallery">
               <Button
+                type="primary"
                 onClick={handleClick}
                 variant="solid"
                 color="primary"
                 style={{
-                  backgroundColor: "var(--nav)",
-                  borderRadius: 8,
                   paddingBlock: 20,
                   paddingInline: 30,
                 }}
@@ -148,12 +147,11 @@ const LockInJudging = () => {
       </Row>
       <Row justify="center">
         <Button
+          type="primary"
           onClick={handleClick}
           variant="solid"
           color="primary"
           style={{
-            backgroundColor: "var(--nav)",
-            borderRadius: 8,
             paddingBlock: 20,
             paddingInline: 30,
           }}

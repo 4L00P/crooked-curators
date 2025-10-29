@@ -5,11 +5,10 @@ const SignInButton2 = () => {
 
   return (
     <Button
+      type="primary"
       variant="solid"
       color="primary"
       style={{
-        backgroundColor: "var(--nav)",
-        borderRadius: 8,
         paddingBlock: 20,
         paddingInline: 30,
       }}

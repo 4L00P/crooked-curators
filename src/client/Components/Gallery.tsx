@@ -110,11 +110,10 @@ const Gallery: React.FC = ({ artwork, size }: ArtworkCardProps) => {
             <Row style={{marginTop: 50}}>
               <Link to="/" className="site-title" reloadDocument={true}>
                 <Button
+                  type="primary"
                   variant="solid"
                   color="primary"
                   style={{
-                    backgroundColor: "var(--nav)",
-                    borderRadius: 8,
                     paddingBlock: 20,
                     paddingInline: 30,
                   }}

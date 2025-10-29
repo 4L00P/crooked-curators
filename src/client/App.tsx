@@ -224,7 +224,7 @@ const App: React.FC = () => {
               style={{
                 marginTop: "2%",
                 padding: "0 15%",
-                color: "var(--darkerbrown)",
+                color: "var(--darkbrown)",
               }}
             >
               <div

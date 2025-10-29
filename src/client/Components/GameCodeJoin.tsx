@@ -32,12 +32,13 @@ const GameCodeJoin = ({username}) => {
       <h3>Enter Game Code to Join a Room</h3>
       <p />
       <Space.Compact style={{ width: "100%" }}>
-        <Input placeholder="Game Code" onChange={handleInput} />
+        <Input size="large" placeholder="Game Code" onChange={handleInput} />
 
         <Link to='/game-settings' >
           <Button 
             onClick={joinGame}
             disabled={!socket || !roomCode}
+            style={{height: 41, fontSize: 20}}
           >
             <FaArrowCircleRight color="var(--nav)" />
           </Button>

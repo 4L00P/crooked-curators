@@ -2,11 +2,13 @@
 
 import React, { useEffect } from "react";
 import { useState } from "react";
+import { useUserContext } from "../context";
 import axios from "axios";
+
 import crookedCuratorsTitle from "../../assets/images/Crooked_Curators_Title.png";
 import monaLoser from "../../assets/images/Mona_Loser_Frame.png";
 
-import { Flex, Row, Col } from "../antdComponents";
+import { Flex, Row, Col, Card } from "../antdComponents";
 
 import HomepageSignInToPlay from "../Components/HomepageSignInToPlay";
 import HomepageCreateJoin from "../Components/HomepageCreateJoin";
@@ -31,6 +33,8 @@ const Homepage: React.FC = () => {
   // --------------------[STATES]---------------------
 
   const [randomName, setRandomName] = useState("");
+
+  const { loggedIn, username } = useUserContext().user;
 
   // --------------------[HANDLERS]--------------------
 
@@ -57,6 +61,7 @@ const Homepage: React.FC = () => {
               alt="Crooked Curators"
               width={320}
               style={{
+                marginTop: 20,
                 marginBottom: 10,
               }}
             />
@@ -65,13 +70,23 @@ const Homepage: React.FC = () => {
           </Col>
 
           <Col >
-            <HomepageName
-              randomName={randomName}
-              handleRandomizeName={handleRandomizeName}
-            />
 
-            <HomepageCreateJoin randomName={randomName} />
+            <Card style={{
+              display: !loggedIn || username === undefined ? 'none' : 'flex',
+              marginBottom: 30,
+              marginTop: 15
+              }}
+            >
+              <HomepageName
+                randomName={randomName}
+                handleRandomizeName={handleRandomizeName}
+              />
+              <br/>
+              <HomepageCreateJoin randomName={randomName} />
+            </Card>
+            
             <HomepageSignInToPlay />
+
           </Col>
 
         </Row>

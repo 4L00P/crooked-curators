@@ -23,7 +23,15 @@ const Reference = (props) => {
   title = game?.reference?.title ?? title;
   image = game?.reference?.src ?? image;
   return (
-    <Card title={title} style={{textAlign:'center'}}>
+    <Card
+      title={title}
+      style={{
+        // marginTop: 10,
+        textAlign:'center',
+        backgroundColor:'var(--content)',
+        borderColor:'var(--lightmauve)'
+      }}
+    >
       <Image src={image} style={{maxHeight: "40vh"}}/>
     </Card>
   );

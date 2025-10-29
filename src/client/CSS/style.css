@@ -6,14 +6,15 @@
     --grey: #8f8f8f;
     --yellow: #EDDB98;
     --lightmauve: #e0b5c2;
-    --grey: rgb(196, 185, 177);
     --maroon: #800933;
     --darkbrown: #3b2b30;
 
     --accent:#c4326a;
-    --background: #a06b7d;;
+    --background: #a06b7d;
+    /* --background: #9e8f95; */ /*this is a nice grey color I like for the bg*/
     --nav: #4d2c3a;
-    --content:#eceadb;
+    --content:#e2dad2;
+    --card:#ffffff62;
 }
 
 *{
@@ -21,12 +22,12 @@
 }
 
 body {
-    background-color: var(--background);
-    margin: 0px;
+  background-color: var(--background);
+  margin: 0px;
 }
 
 .slick-arrow.slick-prev, .slick-arrow.slick-next {
-  color: var(--cyan);
+  color: var(--background);
 }
 
 .slick-arrow.slick-prev::after, .slick-arrow.slick-next::after {
@@ -72,8 +73,6 @@ body {
   background-color: var(--accent);
 }
 
-
-
 .site-layout-content {
   min-height: 280px;
   padding: 24px;
@@ -92,12 +91,85 @@ body {
 }
 
 .ant-btn-default:disabled {
-  color: var(--background);
+  color: var(--nav);
+  background-color: var(--background);
+  border-color: var(--background);
+  &:hover{
+    border-color: var(--grey) !important;
+    background-color: var(--grey) !important;
+  }
 }
+
+.ant-btn-default {
+  background-color: var(--lightmauve);
+  border-color: var(--lightmauve);
+  border-radius: 8px;
+}
+
+.ant-btn-primary:disabled {
+  background-color: var(--background);
+  border-color: var(--background);
+  &:hover{
+    border-color: var(--grey) !important;
+    background-color: var(--grey) !important;
+  }
+}
+
+.ant-btn-primary {
+  background-color: var(--nav);
+  border-color: var(--nav);
+  border-radius: 8px;
+}
+
+.ant-btn-primary:hover, .ant-btn-default:hover {
+  border-color: var(--accent) !important;
+  background-color: var(--accent) !important;
+ }
 
 .ant-input-search-button {
   border-radius: 8px;
   color: var(--content);
   background-color: var(--nav);
+  border-color: var(--nav);
+}
+
+.ant-input:hover {
+  border-color: var(--background) !important;
+}
+
+.ant-input-affix-wrapper {
+  border-color: rgb(199, 192, 192) !important;
+}
+
+.ant-input-affix-wrapper:hover {
+  border-color: var(--background) !important;
+}
+
+.ant-card {
+  border-color: var(--content);
+  /* border-color: var(--card); */
+  background-color: var(--card);
+  border-radius: 8px;
+  border-width: 1px;
+}
+
+.ant-card .ant-card-head {
+  background-color: #ddced2;
+  background-color: #d8c8cc;
+  border-bottom-color: #ddced2;
+}
+
+.ant-list-split .ant-list-item {
+  border-block-end: var(--content)
+}
+
+.ant-tooltip-inner {
+  /* background-color: var(--nav); */
+  background-color: var(--nav) !important;
+  color: var(--content);
+}
+
+.ant-tooltip-arrow::before {
+  background-color: var(--nav) !important;
 }
 

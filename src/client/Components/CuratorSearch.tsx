@@ -48,15 +48,20 @@ const CuratorSearch = () => {
   };
   return (
     <Flex gap="middle" align="center" vertical>
-      <div>
+      <div style={{textAlign:"center", marginBottom: 7}}>
+        <h3>You are the curator!</h3>
+        <h3>Type a keyword to find art for your gallery</h3>
         <ReferenceSearch handleSearch={handleSearch} disabled={disabled} />
       </div>
-      <ArtSubmitCount />
+      <div style={{marginBottom: 7}}>
+        <ArtSubmitCount />
+      </div>
 
       <Reference {...results[selected]} />
 
       <Flex style={{ gap: 20 }}>
         <Button
+          type="primary"
           disabled={selected >= results.length - 1}
           onClick={nextResult}
           variant="solid"
@@ -64,8 +69,6 @@ const CuratorSearch = () => {
           icon={<ReloadOutlined style={{ fontSize: 20 }} />}
           iconPosition="end"
           style={{
-            backgroundColor: "var(--nav)",
-            borderRadius: 8,
             paddingBlock: 20,
             paddingInline: 17,
           }}
@@ -81,13 +84,12 @@ const CuratorSearch = () => {
         </Button>
         {results.length > 0 && results.length < 4 && !confirmed ? (
           <Button
+            type="primary"
             variant="solid"
             color="primary"
             icon={<ReloadOutlined style={{ fontSize: 20 }} />}
             iconPosition="end"
             style={{
-              backgroundColor: "var(--nav)",
-              borderRadius: 8,
               paddingBlock: 20,
               paddingInline: 17,
             }}
@@ -106,12 +108,11 @@ const CuratorSearch = () => {
           cancelText="No"
         >
           <Button
+            type="primary"
             disabled={confirmed || results.length === 0}
             variant="solid"
             color="primary"
             style={{
-              backgroundColor: "var(--nav)",
-              borderRadius: 8,
               paddingBlock: 20,
               paddingInline: 30,
             }}
@@ -124,6 +125,11 @@ const CuratorSearch = () => {
           </Button>
         </Popconfirm>
       </Flex>
+
+      {/* <div style={{marginTop: 16}}>
+        <ArtSubmitCount />
+      </div> */}
+
     </Flex>
   );
 };
