@@ -8,9 +8,6 @@ import axios from 'axios';
 
 import { Button, Tooltip, Spin, Flex, Row } from '../antdComponents';
 
-// ---------------------[TYPES]---------------------
-
-import { LockInJudging as LockInJudgingProps } from './types';
 
 // -------------------[COMPONENT]-------------------
 
@@ -146,18 +143,20 @@ const LockInJudging = () => {
         <h3>Drag the artwork under the ribbon you want to award</h3>
       </Row>
       <Row justify="center">
-        <Button
-          type="primary"
-          onClick={handleClick}
-          variant="solid"
-          color="primary"
-          style={{
-            paddingBlock: 20,
-            paddingInline: 30,
-          }}
-        >
-          <h3>Lock In Ribbons</h3>
-        </Button>
+        <Tooltip title="Proceed to next round">
+          <Button
+            type="primary"
+            onClick={handleClick}
+            variant="solid"
+            color="primary"
+            style={{
+              paddingBlock: 20,
+              paddingInline: 30,
+            }}
+          >
+            <h3>Lock In Ribbons</h3>
+          </Button>
+        </Tooltip>
       </Row>
     </Flex>
   )

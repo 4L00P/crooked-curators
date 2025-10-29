@@ -47,15 +47,18 @@ const CuratorSearch = () => {
     setConfirmed(true);
   };
   return (
-    <Flex gap="middle" align="center" vertical>
-      <div style={{textAlign:"center", marginBottom: 7}}>
-        <h3>You are the curator!</h3>
-        <h3>Type a keyword to find art for your gallery</h3>
-        <ReferenceSearch handleSearch={handleSearch} disabled={disabled} />
-      </div>
-      <div style={{marginBottom: 7}}>
-        <ArtSubmitCount />
-      </div>
+    <Flex className="judging-container" gap="middle" align="center" vertical>
+
+      <Flex>
+        <div style={{textAlign:"center", marginBottom: 7}}>
+          <h3>You are the curator!</h3>
+          <h3>Type a keyword to find art for your gallery</h3>
+          <ReferenceSearch handleSearch={handleSearch} disabled={disabled} />
+        </div>
+        <div className="to-judging-button" style={{marginBottom: 7}}>
+          <ArtSubmitCount />
+        </div>
+      </Flex>
 
       <Reference {...results[selected]} />
 

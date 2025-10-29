@@ -236,6 +236,8 @@ const Canvas = () => {
             })
         })
         .catch((err) => {
+          // still send that it was submitted :( the show must go on
+          socket?.emit('submit')
           console.error('Failed PUT request to s3 bucket: CLIENT:', err);
         })
     })
