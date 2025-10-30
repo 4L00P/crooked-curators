@@ -29,9 +29,9 @@ const ArtSubmitCount:React.FC = () => {
       <Flex justify='center' vertical>
         <h3> Pieces Submitted: {doneCount}/{players.length - 1} </h3>
         
-        <div style={{display: doneCount === players.length - 1 ? 'flex' : 'none'}}>
+        {/* <div style={{display: doneCount === players.length - 1 ? 'flex' : 'none'}}> */}
           <ToJudging/>
-        </div>
+        {/* </div> */}
 
       </Flex>
     </Card>

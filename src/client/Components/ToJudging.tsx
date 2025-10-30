@@ -1,32 +1,38 @@
 import React from "react";
 
-import { Button } from "../antdComponents";
+import { Button, Popconfirm } from "../antdComponents";
 
-import { useSocketContext, useGameContext } from "../context";
+import { useSocketContext } from "../context";
 
 const ToJudging = () => {
   const { socket } = useSocketContext();
-  const { doneCount, players } = useGameContext().game;
 
-  const handleClick = () => {
+  const goToJudging = () => {
     socket?.emit("toJudging");
   };
 
   // --------------------[RENDER]---------------------
 
   return (
-    <Button
-      type="primary"
-      onClick={handleClick}
-      variant="solid"
-      color="primary"
-      style={{
-        paddingBlock: 20,
-        paddingInline: 30,
-      }}
+    <Popconfirm
+      title="Ready to move to judging?"
+      onConfirm={goToJudging}
+      onCancel={() => {}}
+      okText="Yes"
+      cancelText="No"
     >
-      <h3>Judging Time!</h3>
-    </Button>
+      <Button
+        type="primary"
+        variant="solid"
+        color="primary"
+        style={{
+          paddingBlock: 20,
+          paddingInline: 30,
+        }}
+      >
+        <h3>Judging Time!</h3>
+      </Button>
+    </Popconfirm>
   );
 };
 
