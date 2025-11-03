@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Flex } from '../antdComponents';
+import { Button, Flex } from '../../antdComponents';
 
 import axios from 'axios'
 
-import { useSocketContext, useUserContext } from '../context';
+import { useSocketContext, useUserContext } from '../../context';
 
 const buttonStyle: React.CSSProperties = {
   width: '100%',

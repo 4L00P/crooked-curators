@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGameContext} from '../context';
 
-import ToJudging from './ToJudging';
+import ToJudging from './CuratorComponents/ToJudging';
 
 import {
   Card, Flex

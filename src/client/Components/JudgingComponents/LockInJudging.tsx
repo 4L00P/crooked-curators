@@ -3,10 +3,10 @@
 
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { useGameContext, useSocketContext } from '../context';
+import { useGameContext, useSocketContext } from '../../context';
 import axios from 'axios';
 
-import { Button, Tooltip, Spin, Flex, Row } from '../antdComponents';
+import { Button, Tooltip, Spin, Flex, Row } from '../../antdComponents';
 
 
 // -------------------[COMPONENT]-------------------

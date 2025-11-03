@@ -22,9 +22,9 @@ import Homepage from "./Views/Homepage";
 import Profile from "./Views/Profile";
 import GameSettings from "./Views/GameSettings";
 import ActiveGame from "./Views/ActiveGame";
-import RoundJudging from "./Components/RoundJudging";
-import Gallery from "./Components/Gallery";
-import CuratorSearch from "./Components/CuratorSearch";
+import RoundJudging from "./Components/JudgingComponents/RoundJudging";
+import Gallery from "./Views/Gallery";
+import CuratorSearch from "./Views/CuratorSearch";
 
 // Context imports
 import {

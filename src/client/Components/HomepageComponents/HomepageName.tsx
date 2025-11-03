@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { useUserContext } from '../context';
+import { useUserContext } from '../../context';
 
-import { Card, Flex, Col, Row, Button, ReloadOutlined } from '../antdComponents';
+import { Card, Flex, Col, Row, Button, ReloadOutlined } from '../../antdComponents';
 
 
 const randomizerStyle: React.CSSProperties = {

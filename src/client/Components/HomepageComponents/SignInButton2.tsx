@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from '../antdComponents'
+import { Button } from '../../antdComponents'
 
 const SignInButton2 = () => {
 

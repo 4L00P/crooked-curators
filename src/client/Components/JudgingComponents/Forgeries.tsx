@@ -12,9 +12,9 @@ import {
   FlexProps,
   Row,
   Col
-} from '../antdComponents'
+} from '../../antdComponents'
 
-import { Ribbon as RibbonType, Artwork as ArtworkTypes } from './types'
+import { Ribbon as RibbonType, Artwork as ArtworkTypes } from '../types';
 
 const ribbonsStyle: React.CSSProperties = {
   minWidth: 1000,

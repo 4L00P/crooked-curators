@@ -7,7 +7,7 @@ import {
   Row,
   Col,
   Card
-} from '../antdComponents';
+} from '../../antdComponents';
 
 import { Timeline } from "antd";
 

@@ -3,9 +3,9 @@
 import React, { useState, useContext } from "react";
 import { Flex, Button, Popconfirm, ReloadOutlined } from "../antdComponents";
 
-import ReferenceSearch from "./ReferenceSearch";
-import Reference from "./Reference";
-import ArtSubmitCount from "./ArtSubmitCount";
+import ReferenceSearch from "../Components/CuratorComponents/ReferenceSearch";
+import Reference from "../Components/CuratorComponents/Reference";
+import ArtSubmitCount from "../Components/ArtSubmitCount";
 import { SocketContext, GameContext } from "../context";
 import axios from "axios";
 

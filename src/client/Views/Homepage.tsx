@@ -10,10 +10,10 @@ import monaLoser from "../../assets/images/Mona_Loser_Frame.png";
 
 import { Flex, Row, Col, Card } from "../antdComponents";
 
-import HomepageSignInToPlay from "../Components/HomepageSignInToPlay";
-import HomepageCreateJoin from "../Components/HomepageCreateJoin";
-import HomepageName from "../Components/HomepageName";
-import HowToPlay from "../Components/HowToPlay";
+import HomepageSignInToPlay from "../Components/HomepageComponents/HomepageSignInToPlay";
+import HomepageCreateJoin from "../Components/HomepageComponents/HomepageCreateJoin";
+import HomepageName from "../Components/HomepageComponents/HomepageName";
+import HowToPlay from "../Components/HomepageComponents/HowToPlay";
 
 // styling
 

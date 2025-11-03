@@ -11,9 +11,9 @@ import {
   FlexProps,
   Col,
   Row,
-} from '../antdComponents'
+} from '../../antdComponents'
 
-import { Ribbon as RibbonType, Artwork as ArtworkTypes} from './types'
+import { Ribbon as RibbonType, Artwork as ArtworkTypes} from '../types'
 
 const ribbonsStyle: React.CSSProperties = {
   width: 450,

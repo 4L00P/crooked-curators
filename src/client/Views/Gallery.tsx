@@ -16,12 +16,12 @@ import {
 
 const { Meta } = Card;
 
-import Artwork from "./Artwork";
-import Players from "./Players";
+import Artwork from "../Components/JudgingComponents/Artwork";
+import Players from "../Components/GalleryComponents/Players";
 
 import { useGameContext } from "../context";
 
-import { Artwork as ArtworkTypes } from "./types";
+import { Artwork as ArtworkTypes } from "../Components/types";
 import axios from "axios";
 
 // flex styling

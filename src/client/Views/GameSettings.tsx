@@ -6,7 +6,7 @@ import { useSocketContext, useGameContext, useUserContext } from "../context";
 // UI
 import { Button, Typography, Flex, Card } from '../antdComponents'
 // COMPONENTS
-import JoinedPlayers from "../Components/JoinedPlayers";
+import JoinedPlayers from "../Components/LobbyComponents/JoinedPlayers";
 
 const GameSettings = ({roomCode, players}) => {
 

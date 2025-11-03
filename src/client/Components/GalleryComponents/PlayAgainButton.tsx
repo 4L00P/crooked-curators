@@ -1,6 +1,6 @@
 import React from "react";
-import { useSocketContext } from "../context";
-import { Button } from "../antdComponents";
+import { useSocketContext } from "../../context";
+import { Button } from "../../antdComponents";
 
 const PlayAgainButton: React.FC = () => {
   const { socket } = useSocketContext();

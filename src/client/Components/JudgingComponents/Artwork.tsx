@@ -3,9 +3,9 @@
 import React, { useEffect } from "react";
 import { useState } from 'react';
 
-import { useGameContext } from '../context';
+import { useGameContext } from '../../context';
 
-import { Artwork as ArtworkTypes } from './types'
+import { Artwork as ArtworkTypes } from '../types'
 import { useDraggable } from "@dnd-kit/core";
 
 type StylingTypes = {

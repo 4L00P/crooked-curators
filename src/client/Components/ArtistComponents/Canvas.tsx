@@ -13,14 +13,14 @@ import {
   Segmented,
   Button,
   Tooltip,
-} from "../antdComponents";
+} from "../../antdComponents";
 
 import { Slider } from "antd";
 
 import { IoArrowUndoSharp, IoArrowRedoSharp } from "react-icons/io5";
 import { FaPenNib, FaEraser, FaRegSave, FaDownload } from "react-icons/fa";
 
-import { useGameContext, useSocketContext } from "../context";
+import { useGameContext, useSocketContext } from "../../context";
 
 import { Stage, Layer, Line, Text, Rect } from "react-konva";
 
@@ -31,7 +31,7 @@ import { Keybindy } from "@keybindy/react";
 import CanvasTools from "./CanvasTools";
 import SubmitArtwork from "./SubmitArtwork";
 import CanvasColorPicker from "./ColorPicker";
-import ArtSubmitCount from "../Components/ArtSubmitCount";
+import ArtSubmitCount from "../ArtSubmitCount";
 
 // ---------------------[TYPES]---------------------
 

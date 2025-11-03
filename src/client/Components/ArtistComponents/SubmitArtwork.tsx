@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 
 // ui
-import { Button, Tooltip } from '../antdComponents';
+import { Button, Tooltip } from '../../antdComponents';
 import { FaCheck } from "react-icons/fa";
 
 const SubmitArtwork = (props) => {

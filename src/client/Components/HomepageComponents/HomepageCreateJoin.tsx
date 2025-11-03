@@ -1,8 +1,8 @@
 import React from "react";
-import { useUserContext } from "../context";
+import { useUserContext } from "../../context";
 
 // ANTD
-import { Flex, Row, Col } from "../antdComponents";
+import { Flex, Row, Col } from "../../antdComponents";
 
 // COMPONENTS
 import CreateGameButton from "./CreateGameButton";

@@ -7,8 +7,8 @@ import {
 } from '../antdComponents';
 
 // COMPONENTS
-import Canvas from '../Components/Canvas';
-import Reference from '../Components/Reference';
+import Canvas from '../Components/ArtistComponents/Canvas';
+import Reference from '../Components/CuratorComponents/Reference';
 
 const ActiveGame: React.FC = () => {
 

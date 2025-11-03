@@ -1,8 +1,8 @@
 import React from "react";
 
-import { Button, Popconfirm } from "../antdComponents";
+import { Button, Popconfirm } from "../../antdComponents";
 
-import { useSocketContext } from "../context";
+import { useSocketContext } from "../../context";
 
 const ToJudging = () => {
   const { socket } = useSocketContext();

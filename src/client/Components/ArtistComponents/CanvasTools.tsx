@@ -4,7 +4,7 @@ import React from 'react';
 import { useState } from 'react';
 
 // ui
-import { Col, Row, Button, Tooltip } from '../antdComponents';
+import { Col, Row, Button, Tooltip } from '../../antdComponents';
 
 // icons
 import { IoArrowUndoSharp, IoArrowRedoSharp } from "react-icons/io5";
@@ -12,8 +12,6 @@ import { FaPenNib, FaEraser, FaRegSave, FaDownload } from 'react-icons/fa';
 
 import { Keybindy } from '@keybindy/react';
 
-// COMPONENTS
-import CanvasColorPicker from './ColorPicker';
 
 // types
 type propsTypes = {

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from 'react';
 import axios from "axios";
 
-import { useGameContext } from '../context';
+import { useGameContext } from '../../context';
 
 const Player = ({ player }: any) => {
 

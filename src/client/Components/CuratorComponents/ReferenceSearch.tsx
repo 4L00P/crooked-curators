@@ -2,8 +2,8 @@
 
 import React from 'react'
 
-import { Input } from '../antdComponents'
-import type { GetProps } from '../antdComponents';
+import { Input } from '../../antdComponents'
+import type { GetProps } from '../../antdComponents';
 
 const { Search } = Input
 

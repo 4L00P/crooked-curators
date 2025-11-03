@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useState } from 'react';
 
-import { useGameContext } from '../context';
+import { useGameContext } from '../../context';
 
-import { Card } from "../antdComponents"
+import { Card } from "../../antdComponents"
 
 import Player from "./Player";
 

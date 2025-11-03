@@ -4,7 +4,7 @@ import React from 'react';
 import {
     generate, green, presetPalettes, red,
     ColorPicker, ColorPickerProps, theme,
-} from '../antdComponents'
+} from '../../antdComponents'
 
 type Presets = Required<ColorPickerProps>['presets'][number];
 

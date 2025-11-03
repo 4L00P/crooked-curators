@@ -2,10 +2,10 @@
 import React from "react";
 import { useState } from "react"
 import { Link } from 'react-router-dom';
-import { Button, Input, Space, Typography } from "../antdComponents";
+import { Button, Input, Space, Typography } from "../../antdComponents";
 import { FaArrowCircleRight } from "react-icons/fa";
 
-import { useUserContext, useSocketContext } from '../context';
+import { useUserContext, useSocketContext } from '../../context';
 
 const GameCodeJoin = ({username}) => {
   // user context and socket context

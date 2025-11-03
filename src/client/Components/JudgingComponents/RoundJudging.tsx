@@ -1,12 +1,12 @@
 // At the end of a round, all artworks are displayed here for judging
 
 import React, { useEffect } from 'react';
-import { useGameContext, useSocketContext, useUserContext } from '../context';
+import { useGameContext, useSocketContext, useUserContext } from '../../context';
 
 import {
   Divider,
   Flex,
-} from '../antdComponents';
+} from '../../antdComponents';
 
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 
@@ -18,7 +18,7 @@ import LockInJudging from './LockInJudging';
 
 // ---------------------[TYPES]---------------------
 
-import { Artwork as ArtworkTypes, Ribbon as RibbonTypes } from './types';
+import { Artwork as ArtworkTypes, Ribbon as RibbonTypes } from '../types';
 import { cursorTo } from 'readline';
 
 // ---------------------[STYLE]---------------------
